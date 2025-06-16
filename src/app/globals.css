@@ -8,13 +8,13 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-manrope);
+  --font-heading: var(--font-anton);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #212844;
     --foreground: #ededed;
   }
 }
@@ -22,5 +22,65 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-manrope);
+}
+
+/* globals.css */
+.cube-wrapper {
+  perspective: 1000px;
+  width: 125px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.cube-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+}
+
+.cube-wrapper:hover .cube-inner {
+  transform: rotateX(90deg);
+}
+
+.cube-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  backface-visibility: hidden;
+  border: 1px solid #EF8A76;
+  border-radius: 0.25rem;
+}
+
+.cube-face-linkedin {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+  backface-visibility: hidden;
+  border: 1px solid #EF8A76;
+  border-radius: 6px;
+}
+
+.cube-front {
+  background-color: transparent;
+  color: #f4e8d6;
+  transform: rotateX(0deg) translateZ(25px); /* half of height */
+}
+
+.cube-back {
+  background-color: #EF8A76;
+  color: #1b1e3d;
+  transform: rotateX(-90deg) translateZ(25px);
 }
