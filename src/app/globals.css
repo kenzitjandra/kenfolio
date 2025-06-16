@@ -25,6 +25,20 @@ body {
   font-family: var(--font-manrope);
 }
 
+html.lenis {
+  height: auto;
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis [data-lenis-scroll] {
+  will-change: transform;
+}
+
+
 /* globals.css */
 .cube-wrapper {
   perspective: 1000px;
@@ -75,7 +89,7 @@ body {
 
 .cube-front {
   background-color: transparent;
-  color: #f4e8d6;
+  color: #E6D5B7;
   transform: rotateX(0deg) translateZ(25px); /* half of height */
 }
 
@@ -84,3 +98,38 @@ body {
   color: #1b1e3d;
   transform: rotateX(-90deg) translateZ(25px);
 }
+
+.cube-wrapper-skills {
+  perspective: 1000px;
+  width: 130px;
+  height: 45px;
+  cursor: pointer;
+}
+
+.cube-wrapper-skills:hover .cube-inner {
+  transform: rotateX(90deg);
+}
+
+.cube-face-skills {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  backface-visibility: hidden;
+  border: 1px solid #EF8A76;
+  border-radius: 0.25rem;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-start infinite;
+}
+
