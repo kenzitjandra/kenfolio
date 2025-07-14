@@ -23,6 +23,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-manrope);
+  overflow-x: hidden;
 }
 
 html.lenis {
@@ -67,25 +68,16 @@ html.lenis {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 14px;
-  backface-visibility: hidden;
-  border: 1px solid #EF8A76;
-  border-radius: 0.25rem;
-}
-
-.cube-face-linkedin {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
+  padding: 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   backface-visibility: hidden;
   border: 1px solid #EF8A76;
   border-radius: 6px;
 }
+
 
 .cube-front {
   background-color: transparent;

@@ -4,10 +4,56 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const projects = [
-  { title: 'Cafforia', tags: ['HTML', 'CSS', 'JavaScript'] },
-  { title: 'Yumarket', tags: ['React', 'Tailwind', 'Node.js'] },
-  { title: 'Portfolix', tags: ['Next.js', 'Framer Motion'] },
+  {
+    title: 'Cafforia',
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    description:
+      'Cafforia is a classy and aesthetic coffee tutorial website designed to provide users with curated coffee-making videos.',
+    image: '/projects/cafforia.png', 
+    link: 'https://kenzitjandra.github.io/Cafforia_MulMed/index.html',
+  },
+  {
+    title: 'Trakr',
+    tags: ['Flutter', 'Express.js', 'MongoDB'],
+    description:
+      'Trakr is a mobile budgeting app built to help users manage their daily spending with ease and confidence. Designed with a modern and friendly interface, it aims to make financial tracking feel approachable rather than overwhelming, especially for young adults and students.',
+    image: '/images/yumarket.png',
+    link: 'https://github.com/kenzitjandra/BudgetTrackerApp',
+  },
+  {
+    title: 'KenPorto',
+    tags: ['Next.js', 'Tailwind','Framer Motion'],
+    description:
+      'My personal portfolio website, designed to reflect my style as both a designer and developer. Designed to be minimalistic, modern, and smooth. It serves as a digital space where I showcase my projects, design sensibility, and technical skills through an interactive and polished experience.',
+    image: '/images/portfolix.png',
+    link: 'https://portfolix.example.com',
+  },
+  {
+    title: 'Portable Air Purifier',
+    tags: ['Micropython', 'IoT'],
+    description:
+      'Portable Automatic Air Purifier (PAAP) is built using MicroPython, designed to improve air quality on-the-go. Combining IoT sensors with AI-driven decision-making, it continuously monitors environmental conditions and automatically activates the purifier when poor air quality is detected.',
+    image: '/images/portfolix.png',
+    link: 'https://github.com/kenzitjandra/assignment2_UNI174_RPP',
+  },
+  {
+    title: 'Landscape Classify',
+    tags: ['HTML', 'CSS', 'Python'],
+    description:
+      'Landscape Classify is a web-based application that uses a custom-built machine learning model to classify landscape images into categories such as mountains, beaches, forests, oceans, and more. The goal was to explore computer vision by developing and deploying my own AI model in a functional, user-friendly website.',
+    image: '/images/portfolix.png',
+    link: 'https://github.com/kenzitjandra/LandscapeClassifier',
+  },
+  {
+    title: 'JeniusAcademy',
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    description:
+      'JeniusAcademy is a simple, lightweight web platform designed to simulate the basic experience of an online course website like Udemy. Built using only HTML, CSS, and JavaScript, it showcases course cards, basic navigation, and user interactions in a clean and accessible layout.',
+    image: '/images/portfolix.png',
+    link: 'https://github.com/kenzitjandra/JeniusAcademy',
+  },
 ];
+
 
 export default function ProjectShowcase() {
 
@@ -15,6 +61,7 @@ export default function ProjectShowcase() {
     const [direction, setDirection] = useState<'up' | 'down'>('down');
     const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
     const lastScroll = useRef<number>(0);
+    const [openProjectIndex, setOpenProjectIndex] = useState<number | null>(null);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -94,31 +141,95 @@ export default function ProjectShowcase() {
                     <div className="flex flex-col gap-[100px] w-full md:w-[55%] ml-auto">
                         {projects.map((project, i) => (
                             <div
-                            key={i}
-                            ref={(el) => {
+                                key={i}
+                                ref={(el) => {
                                 if (el) projectRefs.current[i] = el;
-                            }}
-                            className="flex flex-col w-full">
+                                }}
+                                className="flex flex-col w-full"
+                            >
                                 {/* Image Placeholder */}
-                                <div className="bg-[#f4f4f4] w-full h-[450px] rounded-md" />
+                                <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block overflow-hidden rounded-md group"
+                                style={{ width: '100%', maxWidth: '100%', height: '450px' }}
+                                >
+                                <motion.img
+                                    src={project.image}
+                                    alt={project.title}
+                                    className="w-full h-full object-contain bg-[#151515] rounded-md transition-transform duration-500 group-hover:scale-105"
+                                    whileHover={{ scale: 1.02 }}
+                                />
+                                </a>
+
+
 
                                 {/* Title & Tags */}
                                 <div className="flex items-center justify-between flex-wrap gap-y-2">
                                     <div className="flex flex-wrap items-center gap-3">
                                         <h2 className="text-[46px] font-body font-semibold text-[#E6D5B7] pr-4">
-                                            {project.title}
+                                        {project.title}
                                         </h2>
                                         {project.tags.map((tag) => (
-                                            <span key={tag} className="text-[10px] font-bold border border-[#EF8A76] px-3 py-2 rounded text-[#E6D5B7]">{tag}</span>
+                                        <span
+                                            key={tag}
+                                            className="text-[10px] font-bold border border-[#EF8A76] px-3 py-2 rounded text-[#E6D5B7]"
+                                        >
+                                            {tag}
+                                        </span>
                                         ))}
                                     </div>
 
-                                    <button className="text-[#EF8A76] text-sm font-medium hover:underline flex items-center gap-1">
-                                    More info <span className="text-xl">➜</span>
-                                    </button>
+                                    {/* Animated Button with Arrow Rotation */}
+                                    <motion.button
+                                    className="text-[#EF8A76] text-sm font-medium flex items-center gap-1 transition-opacity duration-300 hover:opacity-70"
+                                    onClick={() =>
+                                        setOpenProjectIndex(openProjectIndex === i ? null : i)
+                                    }
+                                    whileTap={{ scale: 0.97 }}
+                                    >
+                                        {openProjectIndex === i ? 'Less info' : 'More info'}
+                                        <motion.span
+                                            initial={false}
+                                            animate={{ rotate: openProjectIndex === i ? 90 : 0 }}
+                                            transition={{ duration: 0.3 }}
+                                            className="text-xl origin-center"
+                                        >
+                                            ➜
+                                        </motion.span>
+                                    </motion.button>
+
                                 </div>
 
-                                <div className="border-t border-[#EF8A76]" />
+                                {/* Dropdown Description */}
+                                <motion.div layout className="w-full">
+                                <AnimatePresence initial={false}>
+                                    {openProjectIndex === i && (
+                                    <motion.div
+                                    key="description"
+                                    layout
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.4 }}
+                                    className="text-[#E6D5B7] text-sm px-4 py-3 bg-[#2a3052] rounded-md mb-4"
+                                    >
+                                        <p>{project.description}</p>
+                                    </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Animated Divider */}
+                                <motion.div
+                                    layout
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="border-t border-[#EF8A76]"
+                                />
+                                </motion.div>
                             </div>
                         ))}
                     </div>
