@@ -269,8 +269,8 @@ export default function Hero() {
                     variants={cvVariant}
                     initial="hidden"
                     animate={nameControls}
-                    href="/cv.pdf"
-                    download
+                    href="/Resume_Kenzi Erico Tjandra.pdf"
+                    download="Resume_Kenzi Erico Tjandra.pdf"
                     className="relative group inline-block cursor-pointer border-none outline-none bg-transparent p-0"
                     >
                         {/* Bottom layer - shadow */}
@@ -305,8 +305,8 @@ export default function Hero() {
                     >
                         {[
                             { href: "https://www.instagram.com/kenzitjandra/", front: "INSTAGRAM", back: "@kenzitjandra" },
-                            { href: "https://www.instagram.com/kenzitjandra/", front: "GITHUB", back: "kenzitjandra" },
-                            { href: "https://www.instagram.com/kenzitjandra/", front: "LINKEDIN", back: "Kenzi Erico Tjandra" },
+                            { href: "https://github.com/kenzitjandra/", front: "GITHUB", back: "kenzitjandra" },
+                            { href: "https://www.linkedin.com/in/kenzi-erico-tjandra-b65a2728a/", front: "LINKEDIN", back: "Kenzi Erico Tjandra" },
                         ].map(({ href, front, back }, i) => (
                             <motion.a
                             key={i}
