@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Logo() {
   return (
-    <Link href="/" className="relative w-24 h-12 block group z-20">
+    <Link href="/" className="relative block w-20 h-10 sm:w-20 sm:h-10 md:w-24 md:h-12 group z-20">
       {/* Outline Logo */}
       <Image
         src="/logo-outline.svg"

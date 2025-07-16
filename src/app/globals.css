@@ -125,3 +125,22 @@ html.lenis {
   animation: blink 1s step-start infinite;
 }
 
+@media (max-width: 767px) {
+  .cube-wrapper {
+    width: 98px;
+    height: 40px;
+  }
+
+  .cube-face {
+    font-size: 11px;
+  }
+
+  .cube-wrapper-skills {
+    width: 100%;
+    height: 40px;
+  }
+
+  .cube-face-skills {
+    font-size: 11px;
+  }
+}

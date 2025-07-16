@@ -31,10 +31,10 @@ const designSkills = [
 
 export default function Skills() {
   return (
-    <section className="bg-[#212844] text-[#E6D5B7] px-8 pt-64 pb-24">
+    <section className="bg-[#212844] text-[#E6D5B7] px-8 pt-32 md:pt-64 pb-24">
       {/* Section Title */}
-      <div className="flex flex-col items-start md:flex-row justify-between mb-54">
-        <img src="/arrowdown.svg" alt="arrow" className="w-6 h-6 mb-4 md:mb-0" />
+      <div className="flex items-start flex-row justify-between mb-54">
+        <img src="/arrowdown.svg" alt="arrow" className="w-6 h-6 mt-1.5 md:mb-0" />
         <p className="text-right font-body text-xl font-medium max-w-md md:text-2xl text-[#E6D5B7]">
           Here are my skills that I have acquired<br />throughout the years
         </p>
@@ -44,8 +44,8 @@ export default function Skills() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Left - Development */}
         <div>
-          <h3 className="text-[50px] font-heading mb-4 text-[#E6D5B7]">DEVELOPMENT</h3>
-          <div className="flex flex-wrap gap-3">
+          <h3 className="text-[46px] md:text-[50px] font-heading mb-4 text-[#E6D5B7]">DEVELOPMENT</h3>
+          <div className="md:flex md:flex-wrap gap-3 grid grid-cols-2 w-full">
             {devSkills.map((skill, i) => (
                 <a
                 href={skill.url}
@@ -67,7 +67,7 @@ export default function Skills() {
         {/* Right - Design */}
         <div>
           <h3 className="text-[50px] font-heading mb-4 text-[#E6D5B7]">DESIGN</h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="md:flex md:flex-wrap gap-3 grid grid-cols-2 w-full">
             {designSkills.map((skill, i) => (
                 <a
                 href={skill.url}

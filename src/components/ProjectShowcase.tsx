@@ -89,11 +89,11 @@ export default function ProjectShowcase() {
             <div className="border-t border-[#EF8A76] w-full mb-8" />
 
             {/* Heading Block */}
-            <div className="flex flex-col items-start gap-2 mb-40">
-                <p className="text-[20px] opacity-50 text-[#E6D5B7] font-body font-semibold">
+            <div className="flex flex-col items-start gap-2 mb-8 md:mb-40 overflow-hidden">
+                <p className="text-[18px] md:text-[20px] opacity-50 text-[#E6D5B7] font-body font-semibold">
                 MY SELECTED
                 </p>
-                <h2 className="text-[100px] font-heading leading-none uppercase">
+                <h2 className="text-[80px] md:text-[100px] font-heading leading-none uppercase">
                 Projects
                 </h2>
             </div>
@@ -102,11 +102,11 @@ export default function ProjectShowcase() {
                 <div className="flex flex-col md:flex-row gap-12 items-start w-full">
                     
                     {/* Left - Project Label and Number */}
-                    <div className="sticky top-[50px] flex items-start gap-4 flex-shrink-0">
-                        <p className="text-[60px] font-heading leading-[0.5] text-[#E6D5B7] mt-[30px]">
+                    <div className="sticky top-[80px] md:top-[50px] flex items-start gap-0 md:gap-4 flex-shrink-0">
+                        <p className="text-[0px] md:text-[60px] font-heading leading-[0.5] text-[#E6D5B7] mt-[30px]">
                             PROJECT
                         </p>
-                        <div className="flex items-start gap-0 font-heading text-[300px] leading-none text-[#E6D5B7] h-[300px] overflow-hidden">
+                        <div className="flex items-start gap-0 font-heading text-[100px] md:text-[300px] leading-none text-[#E6D5B7] h-[100px] md:h-[300px] overflow-hidden">
                             {/* Static 0 */}
                             <span className="block">0</span>
 
@@ -138,7 +138,7 @@ export default function ProjectShowcase() {
                     </div>
 
                     {/* Right - Project Card */}
-                    <div className="flex flex-col gap-[100px] w-full md:w-[55%] ml-auto">
+                    <div className="flex flex-col gap-[100px] w-full md:w-[55%] ml-auto overflow-x-hidden">
                         {projects.map((project, i) => (
                             <div
                                 key={i}
@@ -152,8 +152,7 @@ export default function ProjectShowcase() {
                                 href={project.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="block overflow-hidden rounded-md group"
-                                style={{ width: '100%', maxWidth: '100%', height: '450px' }}
+                                className="block overflow-hidden rounded-md group w-full max-w-full h-[280px] sm:h-[350px] md:h-[450px]"
                                 >
                                 <motion.img
                                     src={project.image}
@@ -167,14 +166,14 @@ export default function ProjectShowcase() {
 
                                 {/* Title & Tags */}
                                 <div className="flex items-center justify-between flex-wrap gap-y-2">
-                                    <div className="flex flex-wrap items-center gap-3">
-                                        <h2 className="text-[46px] font-body font-semibold text-[#E6D5B7] pr-4">
+                                    <div className="flex flex-wrap items-center md:gap-x-3 md:gap-y-3 gap-y-1 gap-x-2">
+                                        <h2 className="text-[28px] md:text-[46px] font-body font-semibold text-[#E6D5B7] pr-4 md:w-auto w-full">
                                         {project.title}
                                         </h2>
                                         {project.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className="text-[10px] font-bold border border-[#EF8A76] px-3 py-2 rounded text-[#E6D5B7]"
+                                            className="text-[10px] font-bold border border-[#EF8A76] px-3 py-1 md:py-2 rounded text-[#E6D5B7]"
                                         >
                                             {tag}
                                         </span>
@@ -183,7 +182,7 @@ export default function ProjectShowcase() {
 
                                     {/* Animated Button with Arrow Rotation */}
                                     <motion.button
-                                    className="text-[#EF8A76] text-sm font-medium flex items-center gap-1 transition-opacity duration-300 hover:opacity-70"
+                                    className="md:pb-0 pb-2 text-[#EF8A76] text-sm font-medium flex items-center gap-1 transition-opacity duration-300 hover:opacity-70"
                                     onClick={() =>
                                         setOpenProjectIndex(openProjectIndex === i ? null : i)
                                     }

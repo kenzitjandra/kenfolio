@@ -9,7 +9,11 @@ export default function Hero() {
     const nameControls = useAnimation();
     const imageControls = useAnimation();
 
-    const [ref, inView] = useInView({ threshold: 0.3 }); // this is necessary
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const [ref, inView] = useInView({
+        threshold: 0,
+        rootMargin: isMobile ? '50% 0px 0px 0px' : '0px 0px -30% 0px',
+    });
 
     useEffect(() => {
         if (inView) {
@@ -179,8 +183,8 @@ export default function Hero() {
 
 
     return (
-        <section id="home" className="bg-[#212844] text-[#f4e8d6] flex items-center justify-center px-6 pt-30 pb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full items-start relative">
+        <section id="home" className="bg-[#212844] text-[#f4e8d6] flex items-center justify-center px-6 pt-30 pb-8 overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-2 w-full items-start relative gap-8">
 
                 {/* Left - Large Vertical Name */}
                 <motion.div
@@ -188,13 +192,13 @@ export default function Hero() {
                 variants={container}
                 initial="hidden"
                 animate={nameControls}
-                className="text-[#E6D5B7] font-heading text-[190px] leading-[0.85] uppercase text-center md:text-left"
+                className="text-[#E6D5B7] font-heading text-[26.2vw] sm:text-[10vm] md:text-[190px] leading-[0.85] uppercase text-left md:text-left"
                 >
                 {nameLines.map((lineText, i) => (
                     <motion.p
                     key={lineText}
                     variants={line}
-                    className={i === 2 ? 'pl-[5px]' : ''}
+                    className={`${i === 2 ? 'pl-[5px]' : ''} whitespace-nowrap`}
                     >
                     {lineText.split('').map((char, index) => (
                         <motion.span
@@ -214,7 +218,7 @@ export default function Hero() {
                 variants={imageVariant}
                 initial="hidden"
                 animate={imageControls}
-                className="hidden md:block absolute top-[130px] left-[400px] -translate-y-1/2 z-20 overflow-hidden"
+                className="block absolute w-[32vw] md:absolute top-[9vw] right-[0vw] md:right-auto md:top-[98px] md:left-[395px] -translate-y-1/2 z-20 overflow-hidden mx-auto mt-8"
                 style={{
                     clipPath: 'inset(0 100% 0 0)',
                     WebkitClipPath: 'inset(0 100% 0 0)',
@@ -233,14 +237,14 @@ export default function Hero() {
 
 
                 {/* Right - Developer Info */}
-                <div className="flex flex-col justify-between h-full pr-2">
+                <div className="flex flex-col justify-between h-full pr-0 md:pr-2 mt-8 md:mt-0 items-center md:items-end text-center md:text-right">
 
                 {/* Top Section - Title */}
                 <motion.div
                 variants={container}
                 initial="hidden"
                 animate={nameControls}
-                className="text-[#E6D5B7] text-4xl md:text-[100px] font-heading uppercase text-right leading-[0.85]"
+                className="text-[#E6D5B7] text-4xl sm:text-5xl md:text-[100px] font-heading uppercase leading-[0.85]"
                 >
                     {['Developer', 'Designer'].map((text) => (
                         <motion.p key={text} variants={titleLine}>
@@ -265,7 +269,7 @@ export default function Hero() {
                     variants={cvVariant}
                     initial="hidden"
                     animate={nameControls}
-                    href="/cv.pdf" // Make sure this file is in your `/public` folder
+                    href="/cv.pdf"
                     download
                     className="relative group inline-block cursor-pointer border-none outline-none bg-transparent p-0"
                     >
@@ -273,7 +277,7 @@ export default function Hero() {
                         <span className="absolute inset-0 bg-transparent border border-[#EF8A76] rounded-md translate-y-[6px] z-0" />
 
                         {/* Top layer - front face */}
-                        <span className="relative inline-flex items-center justify-between gap-6 px-28 py-8 border border-[#EF8A76] rounded-md bg-[#212844] text-[#E6D5B7] text-[80px] font-heading leading-none transition-transform duration-200 ease-in-out group-hover:-translate-y-[4px] group-active:-translate-y-[-4px] z-10">
+                        <span className="relative inline-flex items-center justify-between gap-6 px-[22vw] sm:px-16 md:px-28 py-6 sm:py-8 border border-[#EF8A76] rounded-md bg-[#212844] text-[#E6D5B7] text-[15vw] sm:text-5xl md:text-[80px] font-heading leading-none transition-transform duration-200 ease-in-out group-hover:-translate-y-[4px] group-active:-translate-y-[-4px] z-10">
                             CV
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
