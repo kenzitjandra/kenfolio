@@ -23,26 +23,6 @@ export default function Navbar() {
     }, []);
 
 
-    const navbarVariant = {
-        hidden: {
-            opacity: 0,
-            y: -100,
-            transition: {
-            duration: 1.2,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-            },
-        },
-        show: {
-            opacity: 1,
-            y: 0,
-            transition: {
-            duration: 1.2,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-            },
-        },
-    };
-
-
     useEffect(() => {
         const handleScroll = () => {
             const heroHeight = document.getElementById('hero')?.offsetHeight || 600;
