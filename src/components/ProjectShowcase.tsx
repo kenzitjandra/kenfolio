@@ -17,23 +17,23 @@ const projects = [
     tags: ['Flutter', 'Express.js', 'MongoDB'],
     description:
       'Trakr is a mobile budgeting app built to help users manage their daily spending with ease and confidence. Designed with a modern and friendly interface, it aims to make financial tracking feel approachable rather than overwhelming, especially for young adults and students.',
-    image: '/images/yumarket.png',
+    image: '/projects/trakr.png',
     link: 'https://github.com/kenzitjandra/BudgetTrackerApp',
   },
   {
-    title: 'KenPorto',
+    title: 'Kenfolio',
     tags: ['Next.js', 'Tailwind','Framer Motion'],
     description:
       'My personal portfolio website, designed to reflect my style as both a designer and developer. Designed to be minimalistic, modern, and smooth. It serves as a digital space where I showcase my projects, design sensibility, and technical skills through an interactive and polished experience.',
-    image: '/images/portfolix.png',
-    link: 'https://portfolix.example.com',
+    image: '/projects/kenfolio.png',
+    link: '#',
   },
   {
     title: 'Portable Air Purifier',
     tags: ['Micropython', 'IoT'],
     description:
       'Portable Automatic Air Purifier (PAAP) is built using MicroPython, designed to improve air quality on-the-go. Combining IoT sensors with AI-driven decision-making, it continuously monitors environmental conditions and automatically activates the purifier when poor air quality is detected.',
-    image: '/images/portfolix.png',
+    image: '/projects/paap.png',
     link: 'https://github.com/kenzitjandra/assignment2_UNI174_RPP',
   },
   {
@@ -41,7 +41,7 @@ const projects = [
     tags: ['HTML', 'CSS', 'Python'],
     description:
       'Landscape Classify is a web-based application that uses a custom-built machine learning model to classify landscape images into categories such as mountains, beaches, forests, oceans, and more. The goal was to explore computer vision by developing and deploying my own AI model in a functional, user-friendly website.',
-    image: '/images/portfolix.png',
+    image: '/projects/classify.png',
     link: 'https://github.com/kenzitjandra/LandscapeClassifier',
   },
   {
@@ -49,7 +49,7 @@ const projects = [
     tags: ['HTML', 'CSS', 'JavaScript'],
     description:
       'JeniusAcademy is a simple, lightweight web platform designed to simulate the basic experience of an online course website like Udemy. Built using only HTML, CSS, and JavaScript, it showcases course cards, basic navigation, and user interactions in a clean and accessible layout.',
-    image: '/images/portfolix.png',
+    image: '/projects/academy.png',
     link: 'https://github.com/kenzitjandra/JeniusAcademy',
   },
 ];
@@ -103,10 +103,10 @@ export default function ProjectShowcase() {
                     
                     {/* Left - Project Label and Number */}
                     <div className="sticky top-[80px] md:top-[50px] flex items-start gap-0 md:gap-4 flex-shrink-0">
-                        <p className="text-[0px] md:text-[60px] font-heading leading-[0.5] text-[#E6D5B7] mt-[30px]">
+                        <p className="text-[0px] lg:text-[60px] font-heading leading-[0.5] text-[#E6D5B7] mt-[30px]">
                             PROJECT
                         </p>
-                        <div className="flex items-start gap-0 font-heading text-[100px] md:text-[300px] leading-none text-[#E6D5B7] h-[100px] md:h-[300px] overflow-hidden">
+                        <div className="flex items-start gap-0 font-heading text-[100px] lg:text-[300px] leading-none text-[#E6D5B7] h-[100px] md:h-[300px] overflow-hidden">
                             {/* Static 0 */}
                             <span className="block">0</span>
 

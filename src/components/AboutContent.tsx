@@ -58,7 +58,7 @@ export default function AboutContent() {
 
   return (
     <section id="about" className="bg-[#212844] text-[#E6D5B7] px-8 pb-28 overflow-x-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         {/* Left - Text Content */}
         <div className="flex flex-col gap-6">
           <p className="text-md md:text-lg font-body text-[#E6D5B7] font-semibold">

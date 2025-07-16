@@ -192,7 +192,7 @@ export default function Hero() {
                 variants={container}
                 initial="hidden"
                 animate={nameControls}
-                className="text-[#E6D5B7] font-heading text-[26.2vw] sm:text-[10vm] md:text-[190px] leading-[0.85] uppercase text-left md:text-left"
+                className="text-[#E6D5B7] font-heading text-[26.2vw] sm:text-[vm] md:text-[190px] leading-[0.85] uppercase text-left md:text-left"
                 >
                 {nameLines.map((lineText, i) => (
                     <motion.p

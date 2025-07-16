@@ -24,7 +24,7 @@ export default function Footer() {
         {/* Left: Logo */}
         <button
           onClick={() => scrollToSection('home')}
-          className="cursor-pointer relative md:w-66 md:h-33 block group z-20"
+          className="cursor-pointer relative lg:w-66 lg:h-33 block group z-20"
         >
           {/* Outline Logo */}
           <Image
