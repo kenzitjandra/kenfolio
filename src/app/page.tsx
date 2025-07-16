@@ -1,6 +1,5 @@
 'use client';
 
-import Image from "next/image";
 import { useState } from 'react';
 import Hero from '@/components/Hero';
 import About from '@/components/About';

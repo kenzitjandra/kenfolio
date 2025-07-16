@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import Logo from './Logo';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { AnimatePresence, motion } from 'framer-motion';
