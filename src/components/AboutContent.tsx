@@ -62,7 +62,7 @@ export default function AboutContent() {
         {/* Left - Text Content */}
         <div className="flex flex-col gap-6">
           <p className="text-md md:text-lg font-body text-[#E6D5B7] font-semibold">
-            I’m Kenzi, a full-stack developer from Surabaya, Indonesia. With a strong passion for programming and design, I bring ideas to life by turning concepts into impactful digital solutions—drawing from my experience in front-end and back-end development, IoT systems, and machine learning.
+            I’m Kenzi, a full-stack developer from Surabaya, Indonesia. With a strong passion for programming and design, I bring ideas to life by turning concepts into impactful digital solutions. Drawing from my experience in front-end and back-end development, IoT systems, and machine learning.
           </p>
           <p className="text-md md:text-lg font-body text-[#E6D5B7] font-semibold">
             With each project, I stay committed to learning, growing, and making meaningful contributions along the way.
