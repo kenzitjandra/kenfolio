@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion, useAnimation } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 export default function Hero() {
