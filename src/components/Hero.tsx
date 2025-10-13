@@ -8,7 +8,6 @@ import { useInView } from 'react-intersection-observer';
 export default function Hero() {
     const nameControls = useAnimation();
     const imageControls = useAnimation();
-    const [showResume, setShowResume] = useState(false); // State for showing modal
 
 
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
