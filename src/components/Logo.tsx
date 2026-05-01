@@ -1,25 +1,39 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 
-export default function Logo() {
+type LogoProps = {
+  className?: string;
+  outlineSrc?: string;
+  filledSrc?: string;
+  alt?: string;
+  priority?: boolean;
+};
+
+export default function Logo({
+  className = 'h-full w-full',
+  outlineSrc = '/logo-outline.svg',
+  filledSrc = '/logo-filled.svg',
+  alt = 'Logo',
+  priority = false,
+}: LogoProps) {
   return (
-    <Link href="/" className="relative block w-20 h-10 sm:w-20 sm:h-10 md:w-24 md:h-12 group z-20">
-      {/* Outline Logo */}
+    <div className={`relative block ${className} group`}>
       <Image
-        src="/logo-outline.svg"
-        alt="Logo Outline"
+        src={outlineSrc}
+        alt={`${alt} Outline`}
         fill
+        priority={priority}
         className="object-contain transition-opacity duration-300 ease-in-out group-hover:opacity-0"
       />
-      {/* Filled Logo */}
+
       <Image
-        src="/logo-filled.svg"
-        alt="Logo Filled"
+        src={filledSrc}
+        alt={`${alt} Filled`}
         fill
-        className="object-contain transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100"
+        priority={priority}
+        className="object-contain opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
       />
-    </Link>
+    </div>
   );
 }

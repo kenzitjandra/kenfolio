@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Manrope } from 'next/font/google';
 import "./globals.css";
-import Navbar from '@/components/Navbar';
 import LenisProvider from './providers/LenisProvider'
 
 const anton = Anton({
@@ -33,7 +32,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${anton.variable} ${manrope.variable}`}>
-        <Navbar />
         <LenisProvider>
           {children}
         </LenisProvider>

@@ -5,7 +5,11 @@ import { motion, useAnimation } from 'framer-motion';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-export default function Hero() {
+type HeroProps = {
+  startAnimation?: boolean;
+};
+
+export default function Hero({ startAnimation = true }: HeroProps) {
     const nameControls = useAnimation();
     const imageControls = useAnimation();
 
@@ -17,6 +21,12 @@ export default function Hero() {
     });
 
     useEffect(() => {
+        if (!startAnimation) {
+            nameControls.set('hidden');
+            imageControls.set('hidden');
+            return;
+        }
+
         if (inView) {
             nameControls.start('show').then(() => {
             imageControls.start('show');
@@ -25,8 +35,7 @@ export default function Hero() {
             nameControls.start('hidden');
             imageControls.start('hidden');
         }
-    }, [inView, nameControls, imageControls]);
-
+    }, [startAnimation, inView, nameControls, imageControls]);
 
     const titleLine = {
         hidden: {
@@ -271,7 +280,8 @@ export default function Hero() {
                     initial="hidden"
                     animate={nameControls}
                     href="/Resume_Kenzi Erico Tjandra.pdf"
-                    download="Resume_Kenzi Erico Tjandra.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="relative group inline-block cursor-pointer border-none outline-none bg-transparent p-0"
                     >
                         {/* Bottom layer - shadow */}

@@ -25,7 +25,7 @@ export default function Navbar() {
 
     useEffect(() => {
         const handleScroll = () => {
-            const heroHeight = document.getElementById('hero')?.offsetHeight || 600;
+            const heroHeight = document.getElementById('home')?.offsetHeight || 600;
             const currentScrollY = window.scrollY;
 
             // Detect scroll direction
@@ -59,9 +59,9 @@ export default function Navbar() {
         initial={{ y: 0 }}
         animate={{ y: hidden ? '-100%' : '0%' }}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className="fixed top-0 left-0 right-0 z-50 px-8 py-4 bg-transparent text-[#E6D5B7] font-body overflow-x-hidden"
+        className="fixed top-3 left-0 right-0 z-50 px-8 py-4 bg-transparent text-[#E6D5B7] font-body overflow-x-hidden"
         >
-        <div className="flex justify-between items-center w-full">
+        <div className="flex w-full items-center justify-between">
             <button
             onClick={() => {
                 const homeSection = document.getElementById('home');
@@ -70,9 +70,13 @@ export default function Navbar() {
                 setIsMenuOpen(false);
                 }
             }}
-            className="backdrop-blur-md bg-[#212844]/50 rounded-md p-2"
+            className="group relative flex h-[54px] w-[54px] items-center justify-center overflow-hidden rounded-md"
             >
-                <Logo />
+            {/* blurred background behind the transparent logo area */}
+            <span className="absolute inset-0 bg-[#212844]/50 backdrop-blur-md" />
+
+            {/* logo stays on top */}
+            <Logo className="relative z-10 h-[54px] w-[54px]" priority />
             </button>
 
 

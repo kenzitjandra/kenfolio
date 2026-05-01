@@ -16,43 +16,42 @@ export default function Footer() {
   return (
     <footer className="bg-[#212844] text-[#E6D5B7] px-8 pb-10">
       {/* Top divider */}
-      <div className="border-t border-[#EF8A76] w-full mb-10" />
+      <div className="border-t border-[#EF8A76] w-full mb-8" />
 
-      {/* Custom Width Layout */}
-      <div className="flex flex-col md:flex-row gap-6 text-sm">
+      <div className="grid grid-cols-1 md:grid-cols-[140px_minmax(0,1fr)_minmax(0,1.75fr)] gap-5 text-sm items-stretch">
         {/* Left: Logo */}
         <button
           onClick={() => scrollToSection('home')}
-          className="cursor-pointer relative lg:w-66 lg:h-33 block group z-20"
+          className="relative h-[140px] w-[140px] cursor-pointer group z-20"
         >
-          {/* Outline Logo */}
           <Image
             src="/logo-thin-outline.svg"
             alt="Logo Outline"
             fill
             className="object-contain transition-opacity duration-300 ease-in-out group-hover:opacity-0"
           />
-          {/* Filled Logo */}
+
           <Image
             src="/logo-thin-filled.svg"
             alt="Logo Filled"
             fill
-            className="object-contain transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100"
+            className="object-contain opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
           />
         </button>
 
         {/* Middle: Menu */}
-        <div className="border border-[#EF8A76] rounded p-4 w-full md:w-[30%] flex flex-col gap-4">
-          <div className="flex justify-between items-center">
-            <h4 className="text-4xl font-heading">MENU</h4>
+        <div className="min-h-[140px] border border-[#EF8A76] rounded p-5 w-full flex flex-col justify-between gap-4">
+          <div className="flex justify-between items-start">
+            <h4 className="text-4xl font-heading leading-none">MENU</h4>
             <img src="/stairs.svg" alt="icon" className="w-[35px] h-[35px]" />
           </div>
-          <div className="flex flex-wrap gap-3">
+
+          <div className="grid grid-cols-3 gap-3 w-full">
             {navItems.map((item) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
-                className="cursor-pointer relative group border border-[#EF8A76] px-4 py-2 rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0"
+                className="cursor-pointer relative group border border-[#EF8A76] h-11 w-full rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0 flex items-center justify-center"
               >
                 <span className="relative z-10 transition-colors duration-300 group-hover:text-[#212844]">
                   {item}
@@ -64,14 +63,13 @@ export default function Footer() {
         </div>
 
         {/* Right: Contact */}
-        <div className="border border-[#EF8A76] rounded p-4 w-full md:flex-1 flex flex-col gap-4">
-          <div className="flex justify-between items-center">
-            <h4 className="text-4xl font-heading">CONTACT</h4>
+        <div className="min-h-[140px] border border-[#EF8A76] rounded p-5 w-full flex flex-col justify-between gap-4">
+          <div className="flex justify-between items-start">
+            <h4 className="text-4xl font-heading leading-none">CONTACT</h4>
             <img src="/spikyball.svg" alt="icon" className="w-[35px] h-[35px]" />
           </div>
 
-          {/* Contact Buttons and Email Row */}
-          <div className="flex justify-between items-start flex-wrap gap-3">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 w-full">
             {/* Social Buttons */}
             <div className="flex flex-wrap gap-3">
               {[
@@ -84,7 +82,7 @@ export default function Footer() {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="cursor-pointer relative group border border-[#EF8A76] px-4 py-2 rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0"
+                  className="cursor-pointer relative group border border-[#EF8A76] h-11 px-5 rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0 flex items-center justify-center"
                 >
                   <span className="relative z-10 transition-colors duration-300 group-hover:text-[#212844]">
                     {label}
@@ -94,10 +92,10 @@ export default function Footer() {
               ))}
             </div>
 
-            {/* Email aligned to right */}
+            {/* Email aligned right */}
             <a
               href="mailto:kenzitjandra@gmail.com"
-              className="cursor-pointer relative group border border-[#EF8A76] px-4 py-2 rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0"
+              className="cursor-pointer relative group border border-[#EF8A76] h-11 px-5 rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0 flex items-center justify-center lg:ml-auto"
             >
               <span className="relative z-10 transition-colors duration-300 group-hover:text-[#212844]">
                 kenzitjandra@gmail.com
