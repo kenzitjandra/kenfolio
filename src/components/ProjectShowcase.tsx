@@ -13,6 +13,22 @@ const projects = [
     link: 'https://kenzitjandra.github.io/Cafforia_MulMed/index.html',
   },
   {
+    title: 'Hand2Doc',
+    tags: ['Python', 'TensorFlow', 'OpenCV', 'YOLO', 'Streamlit'],
+    description:
+      'Hand2Doc is a computer vision project that converts handwritten notes into structured digital text using CNN-based character recognition, contour-based segmentation, and DocLayout-YOLO layout detection. This was a group project, where I contributed by determining the overall OCR system approach and helping prepare the final report.',
+    image: '/projects/hand2doc.png', 
+    link: 'https://github.com/kenzitjandra/Layout-Parser-ComputerVision',
+  },
+  {
+    title: 'LeadershipLens',
+    tags: ['Python', 'NLP', 'Scikit-learn', 'Streamlit'],
+    description:
+      'LeadershipLens is an NLP-based machine learning project that predicts high-level position potential from qualitative LinkedIn profile information using DistilBERT embeddings and classifiers such as Logistic Regression, Random Forest, Naive Bayes, SVC, and ensemble learning. This was a group project, where I contributed by determining the overall technical approach and designing the machine learning pipeline, including model selection and the integration of natural language processing techniques.',
+    image: '/projects/leadershiplens.png', 
+    link: 'https://github.com/kenzitjandra/High-Profile-LinkedIn-Predictor',
+  },
+  {
     title: 'Trakr',
     tags: ['Flutter', 'Express.js', 'MongoDB'],
     description:
