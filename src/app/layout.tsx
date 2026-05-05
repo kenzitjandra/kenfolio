@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "Kenzi Erico Tjandra - Developer and Designer",
   description: "Showcasing the skills and projects of Kenzi Erico Tjandra",
   icons: {
-    icon: "/icon.svg",
+    icon: "/icon.svg?v=2",
   },
 };
 
