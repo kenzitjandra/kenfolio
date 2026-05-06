@@ -227,7 +227,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
 
         {/* Rubik's cube - center */}
         <div className="absolute inset-0 z-30 grid place-items-center pointer-events-none">
-          <div className="w-[min(440px,42vw)] h-[min(440px,42vw)] overflow-visible">
+          <div className="w-[min(500px,46vw)] h-[min(500px,46vw)] overflow-visible">
             <LoaderScene t={cubeT} />
           </div>
         </div>
