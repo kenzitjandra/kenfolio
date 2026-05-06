@@ -61,28 +61,40 @@ export default function AboutContent() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         {/* Left - Text Content */}
         <div className="flex flex-col gap-6">
-          <p className="text-md md:text-lg font-body text-[#E6D5B7] font-semibold">
-            I’m Kenzi, a full-stack developer from Surabaya, Indonesia. With a strong passion for programming and design, I bring ideas to life by turning concepts into solutions. Drawing from my experience in front-end and back-end development, IoT systems, and machine learning.
+          <p className="text-md md:text-md font-body text-[#E6D5B7] font-semibold text-justify">
+            I’m Kenzi, a Computer Science student and developer from Indonesia with a focus on Full-Stack Development, Machine Learning, and UI/UX design. My work spans across building end-to-end web applications, developing IoT systems, and exploring areas such as Computer Vision and Natural Language Processing (NLP), where I aim to connect software, data, and hardware into practical solutions.
           </p>
-          <p className="text-md md:text-lg font-body text-[#E6D5B7] font-semibold">
-            With each project, I stay committed to learning, growing, and making meaningful contributions along the way.
+          <p className="text-md md:text-md font-body text-[#E6D5B7] font-semibold text-justify">
+            I’ve worked on a variety of projects ranging from scalable web platforms and machine learning systems to IoT-based applications, contributing across development, implementation, and design. I also have experience in academic research in machine learning, including work published in IEEE.
           </p>
 
           <h3 className="text-3xl font-heading mt-4">FOCUSING ON</h3>
 
-          <div className="flex flex-wrap gap-4 md:gap-8">
-            <div className="border border-[#EF8A76] rounded p-4 w-full md:w-[280px]">
+          {/* Changed flex-wrap to flex-col md:flex-row to handle mobile stacking better */}
+          <div className="flex flex-col md:flex-row gap-4 md:gap-8 w-full">
+            
+            {/* Replaced md:w-[280px] with md:flex-1 to make the box stretch */}
+            <div className="border border-[#EF8A76] rounded p-4 w-full md:flex-1">
               <img src="/stairs.svg" alt="Arrow Icon" className="w-[35px] h-[35px] mb-10"/>
               <p className="font-body text-md leading-6 font-semibold">
-                WEB DEVELOPMENT<br />MACHINE LEARNING<br />SOFTWARE DEVELOPMENT
+                WEB DEVELOPMENT
+                <br />
+                MACHINE LEARNING
+                <br />
+                SOFTWARE DEVELOPMENT
               </p>
             </div>
-            <div className="border border-[#EF8A76] rounded p-4 w-full md:w-[280px]">
+
+            {/* Replaced md:w-[280px] with md:flex-1 to make the box stretch */}
+            <div className="border border-[#EF8A76] rounded p-4 w-full md:flex-1">
               <img src="/spikyball.svg" alt="Arrow Icon" className="w-[35px] h-[35px] mb-10"/>
               <p className="font-body text-md leading-6 font-semibold">
-                UI/UX DESIGN<br />LOGO DESIGN
+                UI/UX DESIGN
+                <br />
+                LOGO DESIGN
               </p>
             </div>
+            
           </div>
         </div>
 
