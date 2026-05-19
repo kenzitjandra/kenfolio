@@ -80,7 +80,7 @@ export default function Footer() {
               {[
                 { label: 'INSTAGRAM', url: 'https://instagram.com/kenzitjandra' },
                 { label: 'GITHUB', url: 'https://github.com/kenzitjandra' },
-                { label: 'LINKEDIN', url: 'https://linkedin.com/in/kenzitjandra' },
+                { label: 'LINKEDIN', url: 'https://www.linkedin.com/in/kenzi-erico-tjandra-b65a2728a/' },
               ].map(({ label, url }) => (
                 <a
                   key={label}
