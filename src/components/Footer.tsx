@@ -4,7 +4,12 @@ import { lenis } from '@/app/providers/LenisProvider';
 import Image from 'next/image';
 
 export default function Footer() {
-  const navItems = ['HOME', 'ABOUT', 'PROJECTS'];
+  const navItems = [
+    { label: 'HOME', id: 'home' },
+    { label: 'ABOUT', id: 'about' },
+    { label: 'WORK', id: 'experience' },
+    { label: 'PROJECTS', id: 'projects' },
+  ];
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
@@ -14,7 +19,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#212844] text-[#E6D5B7] px-8 pb-10">
+    <footer className="bg-[#212844] text-[#F0E8D5] px-8 pb-10">
       {/* Top divider */}
       <div className="border-t border-[#EF8A76] w-full mb-8" />
 
@@ -46,15 +51,15 @@ export default function Footer() {
             <img src="/stairs.svg" alt="icon" className="w-[35px] h-[35px]" />
           </div>
 
-          <div className="grid grid-cols-3 gap-3 w-full">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 w-full">
             {navItems.map((item) => (
               <button
-                key={item}
-                onClick={() => scrollToSection(item.toLowerCase())}
-                className="cursor-pointer relative group border border-[#EF8A76] h-11 w-full rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0 flex items-center justify-center"
+                key={item.label}
+                onClick={() => scrollToSection(item.id)}
+                className="cursor-pointer relative group border border-[#EF8A76] h-11 w-full rounded text-[#F0E8D5] font-body font-semibold overflow-hidden z-0 flex items-center justify-center"
               >
                 <span className="relative z-10 transition-colors duration-300 group-hover:text-[#212844]">
-                  {item}
+                  {item.label}
                 </span>
                 <span className="absolute bottom-0 left-0 w-full h-0 bg-[#EF8A76] transition-all duration-300 ease-in-out group-hover:h-full z-0" />
               </button>
@@ -82,7 +87,7 @@ export default function Footer() {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="cursor-pointer relative group border border-[#EF8A76] h-11 px-5 rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0 flex items-center justify-center"
+                  className="cursor-pointer relative group border border-[#EF8A76] h-11 px-5 rounded text-[#F0E8D5] font-body font-semibold overflow-hidden z-0 flex items-center justify-center"
                 >
                   <span className="relative z-10 transition-colors duration-300 group-hover:text-[#212844]">
                     {label}
@@ -95,7 +100,7 @@ export default function Footer() {
             {/* Email aligned right */}
             <a
               href="mailto:kenzitjandra@gmail.com"
-              className="cursor-pointer relative group border border-[#EF8A76] h-11 px-5 rounded text-[#E6D5B7] font-body font-semibold overflow-hidden z-0 flex items-center justify-center lg:ml-auto"
+              className="cursor-pointer relative group border border-[#EF8A76] h-11 px-5 rounded text-[#F0E8D5] font-body font-semibold overflow-hidden z-0 flex items-center justify-center lg:ml-auto"
             >
               <span className="relative z-10 transition-colors duration-300 group-hover:text-[#212844]">
                 kenzitjandra@gmail.com

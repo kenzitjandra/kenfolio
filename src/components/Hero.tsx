@@ -193,8 +193,8 @@ export default function Hero({ startAnimation = true }: HeroProps) {
 
 
     return (
-        <section id="home" className="bg-[#212844] text-[#f4e8d6] flex items-center justify-center px-6 pt-30 pb-8 overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-2 w-full items-start relative gap-8">
+        <section id="home" className="min-h-screen bg-[#212844] text-[#F0E8D5] flex items-start justify-center px-6 pt-28 pb-24 overflow-visible md:items-center md:pt-30 md:pb-8 md:overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-2 w-full items-start relative gap-4 md:gap-8">
 
                 {/* Left - Large Vertical Name */}
                 <motion.div
@@ -202,7 +202,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                 variants={container}
                 initial="hidden"
                 animate={nameControls}
-                className="text-[#E6D5B7] font-heading text-[26.2vw] sm:text-[vm] md:text-[190px] leading-[0.85] uppercase text-left md:text-left"
+                className="text-[#F0E8D5] font-heading text-[25.5vw] sm:text-[25vw] md:text-[190px] leading-[0.88] md:leading-[0.85] uppercase text-left md:text-left"
                 >
                 {nameLines.map((lineText, i) => (
                     <motion.p
@@ -247,17 +247,17 @@ export default function Hero({ startAnimation = true }: HeroProps) {
 
 
                 {/* Right - Developer Info */}
-                <div className="flex flex-col justify-between h-full pr-0 md:pr-2 mt-8 md:mt-0 items-center md:items-end text-center md:text-right">
+                <div className="flex flex-col justify-between h-full pr-0 md:pr-2 mt-4 md:mt-0 items-center md:items-end text-center md:text-right">
 
                 {/* Top Section - Title */}
                 <motion.div
                 variants={container}
                 initial="hidden"
                 animate={nameControls}
-                className="text-[#E6D5B7] text-4xl sm:text-5xl md:text-[100px] font-heading uppercase leading-[0.85]"
+                className="flex w-full justify-between text-[#F0E8D5] text-[36px] sm:text-5xl md:block md:w-auto md:text-[100px] font-heading uppercase leading-[0.85]"
                 >
                     {['Developer', 'Designer'].map((text) => (
-                        <motion.p key={text} variants={titleLine}>
+                        <motion.p key={text} variants={titleLine} className="whitespace-nowrap">
                         {text.split('').map((char, i) => (
                             <motion.span
                             key={i}
@@ -273,7 +273,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
 
 
                 {/* Bottom Section - CV + Socials */}
-                <div className="flex flex-col items-center md:items-end gap-6 mt-12">
+                <div className="flex flex-col items-center md:items-end gap-5 mt-4 md:gap-6 md:mt-12">
                     {/* CV Button */}
                     <motion.a
                     variants={cvVariant}
@@ -288,7 +288,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                         <span className="absolute inset-0 bg-transparent border border-[#EF8A76] rounded-md translate-y-[6px] z-0" />
 
                         {/* Top layer - front face */}
-                        <span className="relative inline-flex items-center justify-between gap-6 px-[22vw] sm:px-16 md:px-28 py-6 sm:py-8 border border-[#EF8A76] rounded-md bg-[#212844] text-[#E6D5B7] text-[15vw] sm:text-5xl md:text-[80px] font-heading leading-none transition-transform duration-200 ease-in-out group-hover:-translate-y-[4px] group-active:-translate-y-[-4px] z-10">
+                        <span className="relative inline-flex items-center justify-between gap-6 px-[22vw] sm:px-16 md:px-28 py-6 sm:py-8 border border-[#EF8A76] rounded-md bg-[#212844] text-[#F0E8D5] text-[15vw] sm:text-5xl md:text-[80px] font-heading leading-none transition-transform duration-200 ease-in-out group-hover:-translate-y-[4px] group-active:-translate-y-[-4px] z-10">
                             CV
                             <svg
                             xmlns="http://www.w3.org/2000/svg"

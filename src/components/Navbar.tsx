@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { lenis } from '@/app/providers/LenisProvider';
 import Magnetic from '@/components/Magnetic';
 
-
 export default function Navbar() {
     const [showHamburger, setShowHamburger] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,249 +16,255 @@ export default function Navbar() {
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
-        handleResize(); // initial check
+        handleResize();
+
         window.addEventListener('resize', handleResize);
+
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
 
     useEffect(() => {
         const handleScroll = () => {
             const heroHeight = document.getElementById('home')?.offsetHeight || 600;
             const currentScrollY = window.scrollY;
 
-            // Detect scroll direction
             if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-            setHidden(true);
+                setHidden(true);
             } else {
-            setHidden(false);
+                setHidden(false);
             }
 
-            // Show hamburger after hero
             const shouldShowHamburger = currentScrollY > heroHeight - 50;
             setShowHamburger(shouldShowHamburger);
 
-            // Close menu if user scrolls back into hero
             if (!shouldShowHamburger && isMenuOpen) {
-            setIsMenuOpen(false);
+                setIsMenuOpen(false);
             }
 
             lastScrollY.current = currentScrollY;
         };
 
         window.addEventListener('scroll', handleScroll);
+
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isMenuOpen]);
 
+    const navItems = [
+        { label: 'HOME', id: 'home' },
+        { label: 'ABOUT', id: 'about' },
+        { label: 'WORK', id: 'experience' },
+        { label: 'PROJECTS', id: 'projects' },
+    ];
 
-    const navItems = ['HOME', 'ABOUT', 'PROJECTS'];
+    const handleNavClick = (item: { label: string; id: string }) => {
+        if (!lenis) return;
+
+        if (item.id === 'about') {
+            const targetId = isMobile ? 'about-content' : 'about-title';
+            const target = document.getElementById(targetId);
+
+            if (target) {
+                lenis.scrollTo(target, {
+                    offset: isMobile ? -20 : 0,
+                });
+            }
+
+            setIsMenuOpen(false);
+            return;
+        }
+
+        const target = document.getElementById(item.id);
+
+        if (target) {
+            lenis.scrollTo(target, { offset: -50 });
+        }
+
+        setIsMenuOpen(false);
+    };
 
     return (
         <motion.nav
-        initial={{ y: 0 }}
-        animate={{ y: hidden ? '-100%' : '0%' }}
-        transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className="fixed top-3 left-0 right-0 z-50 px-8 py-4 bg-transparent text-[#E6D5B7] font-body overflow-x-hidden"
+            initial={{ y: 0 }}
+            animate={{ y: hidden ? '-100%' : '0%' }}
+            transition={{ duration: 0.35, ease: 'easeInOut' }}
+            className="fixed top-3 left-0 right-0 z-50 px-8 py-4 bg-transparent text-[#F0E8D5] font-body overflow-x-hidden"
         >
-        <div className="flex w-full items-center justify-between">
-            <button
-            onClick={() => {
-                const homeSection = document.getElementById('home');
-                if (homeSection && lenis) {
-                lenis.scrollTo(homeSection, { offset: -50 });
-                setIsMenuOpen(false);
-                }
-            }}
-            className="group relative flex h-[54px] w-[54px] items-center justify-center overflow-hidden rounded-md"
-            >
-            {/* blurred background behind the transparent logo area */}
-            <span className="absolute inset-0 bg-[#212844]/50 backdrop-blur-md" />
+            <div className="flex w-full items-center justify-between">
+                <button
+                    onClick={() => {
+                        const homeSection = document.getElementById('home');
 
-            {/* logo stays on top */}
-            <Logo className="relative z-10 h-[54px] w-[54px]" priority />
-            </button>
-
-
-            {/* Animate Between Full Nav and Hamburger */}
-            <div className="relative w-[220px] md:flex hidden justify-end items-center">
-                <AnimatePresence mode="wait">
-                    {!showHamburger ? (
-                    <motion.div
-                        key="fullnav"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="border border-[#EF8A76] p-1 flex gap-1 rounded text-xs backdrop-blur-md bg-[#212844]/50"
-                    >
-                        {navItems.map((label) => {
-                            const id = label.toLowerCase();
-                            return (
-                                <button
-                                key={label}
-                                onClick={() => {
-                                    const target = document.getElementById(id);
-                                    if (target && lenis) {
-                                    lenis.scrollTo(target, { offset: -50 }); // offset if you have a sticky navbar
-                                    setIsMenuOpen(false);
-                                    }
-                                }}
-                                className="cursor-pointer relative overflow-hidden px-6 py-3 text-[#E6D5B7] font-body font-semibold
-                                    border border-transparent rounded
-                                    hover:text-[#1b1e3d] transition-colors duration-300 z-10
-                                    hover:border-[#EF8A76] group"
-                                >
-                                <span className="relative z-10">{label}</span>
-                                <span className="absolute inset-0 bg-[#EF8A76] scale-y-0 origin-bottom transition-transform duration-300 ease-in-out group-hover:scale-y-100 z-0" />
-                                </button>
-                            );
-                        })}
-
-                    </motion.div>
-                    ) : (
-                    <Magnetic>
-                        <motion.div
-                            key="hamburger"
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            transition={{ duration: 0.25 }}
-                            className="backdrop-blur-md bg-[#212844]/50 rounded-md p-2"
-                        >
-                            <button
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="cursor-pointer text-[#E6D5B7] text-2xl"
-                            >
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                    key={isMenuOpen ? 'close' : 'menu'}
-                                    initial={{ rotate: isMenuOpen ? 25 : -25, opacity: 0 }}
-                                    animate={{ rotate: 0, opacity: 1 }}
-                                    exit={{ rotate: isMenuOpen ? -25 : 25, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    >
-                                    {isMenuOpen ? <FiX /> : <FiMenu />}
-                                    </motion.div>
-                                </AnimatePresence>
-                            </button>
-                        </motion.div>
-                    </Magnetic>
-                    )}
-                </AnimatePresence>
-            </div>
-
-            {/* Mobile Hamburger - always visible */}
-            {isMobile && (
-            <div className="flex md:hidden ml-4 z-50">
-                <Magnetic>
-                <motion.div
-                    key="mobile-hamburger"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.25 }}
-                    className="backdrop-blur-md bg-[#212844]/50 rounded-md p-2"
+                        if (homeSection && lenis) {
+                            lenis.scrollTo(homeSection, { offset: -50 });
+                            setIsMenuOpen(false);
+                        }
+                    }}
+                    className="group relative flex h-[54px] w-[54px] items-center justify-center overflow-hidden rounded-md"
                 >
-                    <button
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="cursor-pointer text-[#E6D5B7] text-2xl"
-                    >
+                    <span className="absolute inset-0 bg-[#212844]/50 backdrop-blur-md" />
+                    <Logo className="relative z-10 h-[54px] w-[54px]" priority />
+                </button>
+
+                {/* Animate Between Full Nav and Hamburger */}
+                <div className="relative hidden w-[320px] items-center justify-end md:flex">
                     <AnimatePresence mode="wait">
-                        <motion.div
-                        key={isMenuOpen ? 'close-mobile' : 'menu-mobile'}
-                        initial={{ rotate: isMenuOpen ? 25 : -25, opacity: 0 }}
-                        animate={{ rotate: 0, opacity: 1 }}
-                        exit={{ rotate: isMenuOpen ? -25 : 25, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        >
-                        {isMenuOpen ? <FiX /> : <FiMenu />}
-                        </motion.div>
+                        {!showHamburger ? (
+                            <motion.div
+                                key="fullnav"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                                className="flex gap-1 rounded border border-[#EF8A76] bg-[#212844]/50 p-1 text-xs backdrop-blur-md"
+                            >
+                                {navItems.map((item) => (
+                                    <button
+                                        key={item.label}
+                                        onClick={() => handleNavClick(item)}
+                                        className="group relative z-10 cursor-pointer overflow-hidden rounded border border-transparent px-6 py-3 font-body font-semibold text-[#F0E8D5] transition-colors duration-300 hover:border-[#EF8A76] hover:text-[#1b1e3d]"
+                                    >
+                                        <span className="relative z-10">{item.label}</span>
+                                        <span className="absolute inset-0 z-0 origin-bottom scale-y-0 bg-[#EF8A76] transition-transform duration-300 ease-in-out group-hover:scale-y-100" />
+                                    </button>
+                                ))}
+                            </motion.div>
+                        ) : (
+                            <Magnetic>
+                                <motion.div
+                                    key="hamburger"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    transition={{ duration: 0.25 }}
+                                    className="flex h-[42px] w-[42px] items-center justify-center rounded-md bg-[#212844]/50 backdrop-blur-md"
+                                >
+                                    <button
+                                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                        className="cursor-pointer text-2xl text-[#F0E8D5]"
+                                    >
+                                        <AnimatePresence mode="wait">
+                                            <motion.div
+                                                key={isMenuOpen ? 'close' : 'menu'}
+                                                initial={{
+                                                    rotate: isMenuOpen ? 25 : -25,
+                                                    opacity: 0,
+                                                }}
+                                                animate={{
+                                                    rotate: 0,
+                                                    opacity: 1,
+                                                }}
+                                                exit={{
+                                                    rotate: isMenuOpen ? -25 : 25,
+                                                    opacity: 0,
+                                                }}
+                                                transition={{ duration: 0.2 }}
+                                            >
+                                                {isMenuOpen ? <FiX /> : <FiMenu />}
+                                            </motion.div>
+                                        </AnimatePresence>
+                                    </button>
+                                </motion.div>
+                            </Magnetic>
+                        )}
                     </AnimatePresence>
-                    </button>
-                </motion.div>
-                </Magnetic>
+                </div>
+
+                {/* Mobile Hamburger - always visible */}
+                {isMobile && (
+                    <div className="z-50 ml-4 flex md:hidden">
+                        <Magnetic>
+                            <motion.div
+                                key="mobile-hamburger"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                transition={{ duration: 0.25 }}
+                                className="rounded-md bg-[#212844]/50 p-2 backdrop-blur-md"
+                            >
+                                <button
+                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                    className="cursor-pointer text-2xl text-[#F0E8D5]"
+                                >
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={isMenuOpen ? 'close-mobile' : 'menu-mobile'}
+                                            initial={{
+                                                rotate: isMenuOpen ? 25 : -25,
+                                                opacity: 0,
+                                            }}
+                                            animate={{
+                                                rotate: 0,
+                                                opacity: 1,
+                                            }}
+                                            exit={{
+                                                rotate: isMenuOpen ? -25 : 25,
+                                                opacity: 0,
+                                            }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            {isMenuOpen ? <FiX /> : <FiMenu />}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </button>
+                            </motion.div>
+                        </Magnetic>
+                    </div>
+                )}
             </div>
-            )}
 
+            {/* Desktop Dropdown Menu */}
+            <AnimatePresence>
+                {isMenuOpen && !isMobile && (
+                    <motion.div
+                        initial={{ opacity: 0, x: 25 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 25 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="absolute top-1/2 right-[3rem] z-40 mr-10 flex -translate-y-1/2 transform gap-1 rounded border border-[#EF8A76] bg-[#212844]/80 px-1 py-1 text-xs backdrop-blur-md"
+                    >
+                        {navItems.map((item) => (
+                            <button
+                                key={item.label}
+                                onClick={() => handleNavClick(item)}
+                                className="group relative z-10 cursor-pointer overflow-hidden rounded border border-transparent px-6 py-3 font-body font-semibold text-[#F0E8D5] transition-colors duration-300 hover:border-[#EF8A76] hover:text-[#1b1e3d]"
+                            >
+                                <span className="relative z-10">{item.label}</span>
+                                <span className="absolute inset-0 z-0 origin-bottom scale-y-0 bg-[#EF8A76] transition-transform duration-300 ease-in-out group-hover:scale-y-100" />
+                            </button>
+                        ))}
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-        </div>
+            {/* Mobile Dropdown */}
+            <AnimatePresence>
+                {isMenuOpen && isMobile && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-[#212844]/95 backdrop-blur-md"
+                    >
+                        <button
+                            onClick={() => setIsMenuOpen(false)}
+                            className="absolute top-8 right-8 text-3xl text-[#E6D5B7] transition hover:text-[#EF8A76]"
+                        >
+                            <FiX />
+                        </button>
 
-        {/* Desktop Dropdown Menu */}
-        <AnimatePresence>
-        {isMenuOpen && !isMobile && (
-            <motion.div
-            initial={{ opacity: 0, x: 25 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 25 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="absolute top-1/2 right-[3rem] transform -translate-y-1/2 mr-10 backdrop-blur-md bg-[#212844]/80 border border-[#EF8A76] rounded px-1 py-1 flex gap-1 z-40 text-xs shadow-xl"
-            >
-            {['HOME', 'ABOUT', 'PROJECTS'].map((label) => {
-                const id = label.toLowerCase();
-                return (
-                <button
-                    key={label}
-                    onClick={() => {
-                    const target = document.getElementById(id);
-                    if (target && lenis) {
-                        lenis.scrollTo(target, { offset: -50 });
-                    }
-                    setIsMenuOpen(false);
-                    }}
-                    className="cursor-pointer relative overflow-hidden px-6 py-3 text-[#E6D5B7] font-body font-semibold
-                    border border-transparent rounded
-                    hover:text-[#1b1e3d] transition-colors duration-300 z-10
-                    hover:border-[#EF8A76] group"
-                >
-                    <span className="relative z-10">{label}</span>
-                    <span className="absolute inset-0 bg-[#EF8A76] scale-y-0 origin-bottom transition-transform duration-300 ease-in-out group-hover:scale-y-100 z-0" />
-                </button>
-                );
-            })}
-            </motion.div>
-        )}
-        </AnimatePresence>
-
-
-        {/* Blurred Dropdown */}
-        <AnimatePresence>
-        {isMenuOpen && isMobile && (
-            <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-[#212844]/95 backdrop-blur-md z-40 flex flex-col items-center justify-center gap-8"
-            >
-            <button
-                onClick={() => setIsMenuOpen(false)}
-                className="absolute top-8 right-8 text-[#E6D5B7] text-3xl hover:text-[#EF8A76] transition"
-            >
-                <FiX />
-            </button>
-
-            {navItems.map((label) => {
-                const id = label.toLowerCase();
-                return (
-                <button
-                    key={label}
-                    onClick={() => {
-                    const target = document.getElementById(id);
-                    if (target && lenis) {
-                        lenis.scrollTo(target, { offset: -50 });
-                    }
-                    setIsMenuOpen(false);
-                    }}
-                    className="text-3xl text-[#E6D5B7] font-semibold transition hover:text-[#EF8A76]"
-                >
-                    {label}
-                </button>
-                );
-            })}
-            </motion.div>
-        )}
-        </AnimatePresence>
-
+                        {navItems.map((item) => (
+                            <button
+                                key={item.label}
+                                onClick={() => handleNavClick(item)}
+                                className="text-3xl font-semibold text-[#F0E8D5] transition hover:text-[#EF8A76]"
+                            >
+                                {item.label}
+                            </button>
+                        ))}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.nav>
     );
 }

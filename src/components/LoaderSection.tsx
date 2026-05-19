@@ -217,7 +217,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
       <div ref={stageRef} className="relative h-full w-full bg-[#212844]">
         {/* loading text - top left */}
         <div className="absolute left-[clamp(0.5rem,2vw,2rem)] top-[clamp(1rem,3vw,3rem)] z-20">
-          <h1 className="font-heading text-[#E6D5B7] text-[clamp(4rem,8vw,8rem)] leading-[0.85] tracking-tight">
+          <h1 className="font-heading text-[#F0E8D5] text-[clamp(4rem,8vw,8rem)] leading-[0.85] tracking-tight">
             LOADING
             <span className="inline-block w-[0.85em] text-left">
               {loadingDots}
@@ -234,7 +234,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
 
         {/* loading number - bottom right */}
         <div className="absolute right-[clamp(0.7rem,2.5vw,2.5rem)] bottom-[clamp(1rem,3vw,3rem)] z-20">
-          <div className="font-heading text-[#E6D5B7] text-[clamp(5rem,16vw,15rem)] leading-[0.85] select-none">
+          <div className="font-heading text-[#F0E8D5] text-[clamp(5rem,16vw,15rem)] leading-[0.85] select-none">
             {String(progress).padStart(2, '0')}
           </div>
         </div>
