@@ -36,7 +36,7 @@ export default function Skills() {
       <div className="flex items-start flex-row justify-between mb-54">
         <img src="/arrowdown.svg" alt="arrow" className="w-6 h-6 mt-1.5 md:mb-0" />
         <p className="text-right font-body text-xl font-medium max-w-md md:text-2xl text-[#F0E8D5]">
-          Here are my skills that I have acquired<br />throughout the years
+          Here are some skills that I have acquired<br />throughout the years
         </p>
       </div>
 

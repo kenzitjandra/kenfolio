@@ -114,10 +114,10 @@ const experienceItems = [
   {
     category: 'Competitions',
     title: '2nd Runner Up',
-    eyebrow: 'Game Jam Comfest 17',
+    eyebrow: 'COMPFEST 17 Game Jam',
     year: '',
     imageSrc: '/experience/compfest_main_competition_v2.webp',
-    imageAlt: 'Game Jam Comfest 17',
+    imageAlt: 'COMPFEST 17 Game Jam',
     decorativeImages: [
       {
         src: '/experience/compfest_1_competition.webp',
