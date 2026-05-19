@@ -35,7 +35,7 @@ export default function Skills() {
       {/* Section Title */}
       <div className="flex items-start flex-row justify-between mb-54">
         <img src="/arrowdown.svg" alt="arrow" className="w-6 h-6 mt-1.5 md:mb-0" />
-        <p className="text-right font-body text-xl font-medium max-w-md md:text-2xl text-[#E6D5B7]">
+        <p className="text-right font-body text-xl font-medium max-w-md md:text-2xl text-[#F0E8D5]">
           Here are my skills that I have acquired<br />throughout the years
         </p>
       </div>
@@ -44,7 +44,7 @@ export default function Skills() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Left - Development */}
         <div>
-          <h3 className="text-[46px] md:text-[50px] font-heading mb-4 text-[#E6D5B7]">DEVELOPMENT</h3>
+          <h3 className="text-[46px] md:text-[50px] font-heading mb-4 text-[#F0E8D5]">DEVELOPMENT</h3>
           <div className="md:flex md:flex-wrap gap-3 grid grid-cols-2 w-full">
             {devSkills.map((skill, i) => (
                 <a
@@ -66,7 +66,7 @@ export default function Skills() {
 
         {/* Right - Design */}
         <div>
-          <h3 className="text-[50px] font-heading mb-4 text-[#E6D5B7]">DESIGN</h3>
+          <h3 className="text-[50px] font-heading mb-4 text-[#F0E8D5]">DESIGN</h3>
           <div className="md:flex md:flex-wrap gap-3 grid grid-cols-2 w-full">
             {designSkills.map((skill, i) => (
                 <a
