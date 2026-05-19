@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: 'Kenzi Tjandra Portfolio',
     images: [
       {
-        url: '/main_page_ss.png',
+        url: 'https://itskenz.vercel.app/main_page_ss.png',
         width: 1200,
         height: 630,
         alt: 'Kenfolio Preview',
