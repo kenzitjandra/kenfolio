@@ -17,10 +17,26 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Kenzi Erico Tjandra - Developer and Designer",
-  description: "Showcasing the skills and projects of Kenzi Erico Tjandra",
-  icons: {
-    icon: "/icon.svg?v=2",
+  title: 'Kenzi Tjandra | Developer and Designer',
+  description:
+    'Personal portfolio of Kenzi Erico Tjandra — showcasing projects, experience, publications, and web development work.',
+  metadataBase: new URL('https://itskenz.vercel.app'),
+  openGraph: {
+    title: 'Kenzi Tjandra | Portfolio',
+    description:
+      'Explore my projects, experience, publications, and web development journey.',
+    url: 'https://itskenz.vercel.app',
+    siteName: 'Kenzi Tjandra Portfolio',
+    images: [
+      {
+        url: '/main_page_ss.png',
+        width: 1200,
+        height: 630,
+        alt: 'Kenfolio Preview',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
   },
 };
 
