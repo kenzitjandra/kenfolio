@@ -78,9 +78,9 @@ export default function AboutContent({ id }: AboutContentProps) {
         <div className="flex flex-col gap-6">
           <p className="font-body text-[15px] font-semibold leading-[1.7] text-left text-[#F0E8D5] md:text-justify md:text-base md:leading-[1.6]">
             I’m Kenzi, a Computer Science student and developer from Indonesia
-            with a focus on Full-Stack Development, Machine Learning, and UI/UX
+            with a focus on Full-Stack Development, Machine Learning Engineering, and UI/UX
             design. My work spans across building end-to-end web applications,
-            developing IoT systems, and exploring areas such as Computer Vision
+            developing IoT systems, and engineering machine learning systems across Computer Vision
             and Natural Language Processing (NLP), where I aim to connect
             software, data, and hardware into practical solutions.
           </p>
