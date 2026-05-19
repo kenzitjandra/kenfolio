@@ -332,6 +332,7 @@ export default function ExperienceShowcase() {
               'left-[-20vw] top-[-2vh] h-[26vh] w-[12vw]',
               'left-[42vw] top-[-36vh] h-[24vh] w-[11vw]',
             ]}
+            priorityImages
           />
 
           {/* Organizational item 2 */}
@@ -450,6 +451,7 @@ type ExperienceCardProps = {
   className: string;
   imageClassName: string;
   decorativeBlocks: string[];
+  priorityImages?: boolean;
 };
 
 function ExperienceCard({
@@ -457,6 +459,7 @@ function ExperienceCard({
   className,
   imageClassName,
   decorativeBlocks,
+  priorityImages = false,
 }: ExperienceCardProps) {
   return (
     <article className={`absolute z-20 w-[40vw] ${className}`}>
@@ -467,7 +470,8 @@ function ExperienceCard({
           fill
           sizes="40vw"
           className="object-cover object-center"
-          priority={false}
+          priority={priorityImages}
+          loading={priorityImages ? 'eager' : 'lazy'}
         />
       </div>
 
@@ -485,6 +489,8 @@ function ExperienceCard({
               fill
               sizes="12vw"
               className="object-cover object-center"
+              priority={priorityImages}
+              loading={priorityImages ? 'eager' : 'lazy'}
             />
           </div>
         );
