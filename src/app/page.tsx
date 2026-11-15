@@ -19,6 +19,7 @@ import LoaderSection from '@/components/LoaderSection';
 export default function Home() {
   const [loaderDone, setLoaderDone] = useState(false);
   const [siteReveal, setSiteReveal] = useState(false);
+  const [curtainDone, setCurtainDone] = useState(false);
   
   const experiencePublicationBgRef = useRef<HTMLDivElement | null>(null);
   const experienceToPublicationRef = useRef<HTMLDivElement | null>(null);
@@ -52,21 +53,11 @@ export default function Home() {
   useEffect(() => {
     if (!loaderDone || !siteReveal) return;
 
-    const refresh = () => {
+    const timer = window.setTimeout(() => {
       ScrollTrigger.refresh();
-    };
+    }, 2500);
 
-    const timers = [
-      window.setTimeout(refresh, 100),
-      window.setTimeout(refresh, 500),
-      window.setTimeout(refresh, 1000),
-    ];
-
-    document.fonts?.ready.then(refresh);
-
-    return () => {
-      timers.forEach((timer) => window.clearTimeout(timer));
-    };
+    return () => window.clearTimeout(timer);
   }, [loaderDone, siteReveal]);
 
   useLayoutEffect(() => {
@@ -149,10 +140,6 @@ export default function Home() {
       };
     }, transitionArea);
 
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-    });
-
     return () => ctx.revert();
   }, [loaderDone, siteReveal]);
 
@@ -165,30 +152,35 @@ export default function Home() {
         />
       )}
 
+      {/* Navy curtain that wipes up to reveal the site (transform-only = smooth) */}
+      {!curtainDone && (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-[9998] bg-[#212844]"
+          initial={{ y: '0%' }}
+          animate={{ y: siteReveal ? '-100%' : '0%' }}
+          transition={{
+            duration: 0.9,
+            ease: [0.76, 0, 0.24, 1],
+          }}
+          onAnimationComplete={() => {
+            if (siteReveal) setCurtainDone(true);
+          }}
+          style={{ willChange: 'transform' }}
+        />
+      )}
+
       {loaderDone && <Navbar />}
 
       <motion.main
-        initial={{
-          y: '16vh',
-          clipPath: 'inset(100% 0 0 0)',
-        }}
-        animate={
-          siteReveal
-            ? {
-                y: '0vh',
-                clipPath: 'inset(0% 0 0 0)',
-              }
-            : {
-                y: '16vh',
-                clipPath: 'inset(100% 0 0 0)',
-              }
-        }
+        initial={{ y: '16vh' }}
+        animate={{ y: siteReveal ? '0vh' : '16vh' }}
         transition={{
           duration: 0.9,
           ease: [0.76, 0, 0.24, 1],
         }}
         style={{
-          willChange: 'transform, clip-path',
+          willChange: 'transform',
         }}
         className="relative bg-transparent"
       >

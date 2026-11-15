@@ -19,6 +19,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
   // refs for adaptive cube timing
   const progressRef = useRef(0);
   const cancelledRef = useRef(false);
+  const unlockedRef = useRef(false);
 
   const lastProgRef = useRef(0);
   const lastTimeRef = useRef(0);
@@ -99,6 +100,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
       if (cancelledRef.current) return;
 
       // unlock scroll + start Lenis
+      unlockedRef.current = true;
       window.dispatchEvent(new Event('itsken:scroll-unlock'));
       document.documentElement.style.overflow = prevHtml;
       document.body.style.overflow = prevBody;
@@ -200,8 +202,10 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
       if (timeoutId) clearTimeout(timeoutId);
       cancelAnimationFrame(rafId);
 
-      // unlock scroll (safety)
-      window.dispatchEvent(new Event('itsken:scroll-unlock'));
+      // unlock scroll (safety) — only if finish() didn't already do it
+      if (!unlockedRef.current) {
+        window.dispatchEvent(new Event('itsken:scroll-unlock'));
+      }
       document.documentElement.style.overflow = prevHtml;
       document.body.style.overflow = prevBody;
     };
