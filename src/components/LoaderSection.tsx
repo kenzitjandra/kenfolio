@@ -174,7 +174,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
           setTimeout(() => {
             if (cancelledRef.current) return;
             finish();
-          }, 250);
+          }, 650);
         }
 
         return next;
