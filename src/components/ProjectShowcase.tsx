@@ -77,7 +77,7 @@ export default function ProjectShowcase() {
     const [mounted, setMounted] = useState(false);
 
     const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const lastScroll = useRef<number>(0);
+    const activeIndexRef = useRef<number>(0);
 
     const [imageCursor, setImageCursor] = useState({
         active: false,
@@ -96,12 +96,6 @@ export default function ProjectShowcase() {
         let ticking = false;
 
         const updateActiveProject = () => {
-            const currentY = window.scrollY;
-            const scrollDirection = currentY > lastScroll.current ? 'down' : 'up';
-
-            setDirection(scrollDirection);
-            lastScroll.current = currentY;
-
             const triggerPoint = window.innerHeight * 0.5;
 
             let activeIndex = 0;
@@ -111,24 +105,17 @@ export default function ProjectShowcase() {
 
                 const rect = el.getBoundingClientRect();
 
-                /**
-                 * Project switches only when its top edge has crossed
-                 * the middle of the viewport.
-                 *
-                 * This means:
-                 * - scrolling down: next project activates when its top reaches mid-screen
-                 * - scrolling up: previous project re-activates when the current project's top
-                 *   moves back below mid-screen
-                 */
+                // A project becomes active once its top edge crosses mid-screen
                 if (rect.top <= triggerPoint) {
                     activeIndex = idx;
                 }
             });
 
-            setProjectIndex((prev) => {
-                if (prev === activeIndex) return prev;
-                return activeIndex;
-            });
+            if (activeIndex !== activeIndexRef.current) {
+                setDirection(activeIndex > activeIndexRef.current ? 'down' : 'up');
+                activeIndexRef.current = activeIndex;
+                setProjectIndex(activeIndex);
+            }
 
             ticking = false;
         };
@@ -184,39 +171,29 @@ export default function ProjectShowcase() {
                                 <span className="block">0</span>
 
                                 <div className="relative w-[clamp(4.5rem,8.5vw,10rem)] h-[clamp(8rem,16vw,18.75rem)] overflow-hidden">
-                                    <AnimatePresence mode="wait" custom={direction}>
-                                        <motion.span
-                                            key={projectIndex}
-                                            custom={direction}
-                                            variants={{
-                                                initial: (dir: 'up' | 'down') => ({
-                                                    y: dir === 'down' ? 300 : -300,
-                                                }),
-                                                animate: {
-                                                    y: 0,
-                                                    transition: {
-                                                        type: 'spring',
-                                                        stiffness: 300,
-                                                        damping: 30,
-                                                    },
-                                                },
-                                                exit: (dir: 'up' | 'down') => ({
-                                                    y: dir === 'down' ? -300 : 300,
-                                                    transition: {
-                                                        type: 'tween',
-                                                        duration: 0.35,
-                                                        ease: [0.22, 1, 0.36, 1],
-                                                    },
-                                                }),
-                                            }}
-                                            initial="initial"
-                                            animate="animate"
-                                            exit="exit"
-                                            className="absolute top-0 left-0"
-                                        >
-                                            {String(projectIndex + 1)}
-                                        </motion.span>
-                                    </AnimatePresence>
+                                    <motion.div
+                                        className="absolute top-0 left-0 flex flex-col"
+                                        initial={false}
+                                        animate={{
+                                            y: `${-(projectIndex * 100) / projects.length}%`,
+                                        }}
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 260,
+                                            damping: 30,
+                                            mass: 0.9,
+                                        }}
+                                    >
+                                        {projects.map((_, i) => (
+                                            <span
+                                                key={i}
+                                                className="block h-[clamp(8rem,16vw,18.75rem)]"
+                                                aria-hidden={i !== projectIndex}
+                                            >
+                                                {i + 1}
+                                            </span>
+                                        ))}
+                                    </motion.div>
                                 </div>
                             </div>
                         </div>
