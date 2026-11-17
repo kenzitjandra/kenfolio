@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { useLayoutEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const experienceItems = [
   {
@@ -145,6 +145,17 @@ export default function ExperienceShowcase() {
   const bgRef = useRef<HTMLDivElement | null>(null);
   const orgStickyTitleRef = useRef<HTMLHeadingElement | null>(null);
   const compStickyTitleRef = useRef<HTMLDivElement | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const update = () => setIsDesktop(mq.matches);
+
+    update();
+    mq.addEventListener('change', update);
+
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -333,6 +344,7 @@ export default function ExperienceShowcase() {
               'left-[42vw] top-[-36vh] h-[24vh] w-[11vw]',
             ]}
             priorityImages
+            eager={isDesktop}
           />
 
           {/* Organizational item 2 */}
@@ -345,6 +357,7 @@ export default function ExperienceShowcase() {
               'left-[-22vw] top-[36vh] h-[24vh] w-[12vw]',
               'left-[42vw] top-[4vh] h-[24vh] w-[12vw]',
             ]}
+            eager={isDesktop}
           />
 
           {/* Organizational item 3 */}
@@ -357,6 +370,7 @@ export default function ExperienceShowcase() {
               'left-[45vw] top-[-31vh] h-[22vh] w-[11vw]',
               'left-[58vw] top-[-2vh] h-[24vh] w-[11vw]',
             ]}
+            eager={isDesktop}
           />
 
           {/* Competition item 1 */}
@@ -369,6 +383,7 @@ export default function ExperienceShowcase() {
               'left-[46vw] top-[-32vh] h-[22vh] w-[11vw]',
               'left-[58vw] top-[-2vh] h-[24vh] w-[11vw]',
             ]}
+            eager={isDesktop}
           />
 
           {/* Competition item 2 */}
@@ -381,6 +396,7 @@ export default function ExperienceShowcase() {
               'left-[47vw] top-[6vh] h-[22vh] w-[11vw]',
               'left-[58vw] top-[40vh] h-[22vh] w-[11vw]',
             ]}
+            eager={isDesktop}
           />
         </div>
       </div>
@@ -451,6 +467,7 @@ type ExperienceCardProps = {
   className: string;
   imageClassName: string;
   decorativeBlocks: string[];
+  eager?: boolean;
   priorityImages?: boolean;
 };
 
@@ -459,7 +476,7 @@ function ExperienceCard({
   className,
   imageClassName,
   decorativeBlocks,
-  priorityImages = false,
+  eager = false,
 }: ExperienceCardProps) {
   return (
     <article className={`absolute z-20 w-[40vw] ${className}`}>
@@ -470,8 +487,8 @@ function ExperienceCard({
           fill
           sizes="40vw"
           className="object-cover object-center"
-          priority={priorityImages}
-          loading={priorityImages ? 'eager' : 'lazy'}
+          loading={eager ? 'eager' : 'lazy'}
+          data-preload="true"
         />
       </div>
 
@@ -489,8 +506,8 @@ function ExperienceCard({
               fill
               sizes="12vw"
               className="object-cover object-center"
-              priority={priorityImages}
-              loading={priorityImages ? 'eager' : 'lazy'}
+              loading={eager ? 'eager' : 'lazy'}
+              data-preload="true"
             />
           </div>
         );
