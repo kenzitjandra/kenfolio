@@ -217,10 +217,9 @@ export function getProjectsUsing(name: string) {
     .map((p) => p.title);
 }
 
-/** What shows in the Skills section, in order */
 export const devSkills = [
-  'HTML', 'CSS', 'JavaScript', 'C', 'C++', 'Java', 'Python', 'PHP',
-  'SQL', 'React', 'Tailwind', 'Node.js', 'Next.js', 'Express.js', 'MongoDB', 'GitHub',
+  'HTML', 'CSS', 'JavaScript', 'TypeScript', 'C', 'C++', 'Java', 'Python', 'Go', 'PHP',
+  'SQL', 'React', 'Vue.js', 'Tailwind', 'Node.js', 'Next.js', 'Express.js', 'MongoDB', 'GitHub',
 ];
 
 export const designSkills = ['Figma', 'Photoshop', 'Illustrator', 'Canva'];

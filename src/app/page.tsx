@@ -24,6 +24,8 @@ export default function Home() {
   const experiencePublicationBgRef = useRef<HTMLDivElement | null>(null);
   const experienceToPublicationRef = useRef<HTMLDivElement | null>(null);
 
+  const publicationRef = useRef<HTMLDivElement | null>(null);
+
   useLayoutEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
@@ -95,8 +97,9 @@ export default function Home() {
 
     const bg = experiencePublicationBgRef.current;
     const transitionArea = experienceToPublicationRef.current;
+    const publication = publicationRef.current;
 
-    if (!bg || !transitionArea) return;
+    if (!bg || !transitionArea || !publication) return;
 
     const ctx = gsap.context(() => {
       gsap.set(bg, {
@@ -108,15 +111,15 @@ export default function Home() {
       mm.add('(min-width: 768px)', () => {
         gsap.to(bg, {
           backgroundColor: '#EEE7D6',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: transitionArea,
-            start: 'top+=77.5% top',
-            end: 'bottom-=5% bottom',
-            scrub: 1,
-            invalidateOnRefresh: true,
-            markers: false,
-          },
+            ease: 'none',
+            scrollTrigger: {
+              trigger: publication,
+              start: 'top 50%',
+              end: 'top 19%',
+              scrub: 1,
+              invalidateOnRefresh: true,
+              markers: false,
+            },
         });
       });
 
@@ -125,9 +128,9 @@ export default function Home() {
           backgroundColor: '#EEE7D6',
           ease: 'none',
           scrollTrigger: {
-            trigger: transitionArea,
-            start: 'top+=55% top',
-            end: 'bottom-=20% bottom',
+            trigger: publication,
+            start: 'top bottom',
+            end: 'top 50%',
             scrub: 1,
             invalidateOnRefresh: true,
             markers: false,
@@ -197,7 +200,9 @@ export default function Home() {
           
           <div ref={experienceToPublicationRef} className="relative">
             <ExperienceShowcase />
-            <Publication />
+            <div ref={publicationRef}>
+              <Publication />
+            </div>
           </div>
 
           <Skills />
