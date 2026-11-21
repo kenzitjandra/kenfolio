@@ -144,3 +144,31 @@ html.lenis {
     font-size: 11px;
   }
 }
+
+.hero-scale {
+  --u: 1px;
+}
+
+@media (min-width: 768px) {
+  .hero-scale {
+    --u: max(0.6px, min(calc(100vw / 1366), calc(100vh / 660)));
+  }
+
+  /* Social cubes in the hero scale with it */
+  .hero-scale .cube-wrapper {
+    width: calc(125 * var(--u));
+    height: calc(40 * var(--u));
+  }
+
+  .hero-scale .cube-face {
+    font-size: calc(13 * var(--u));
+  }
+
+  .hero-scale .cube-front {
+    transform: rotateX(0deg) translateZ(calc(25 * var(--u)));
+  }
+
+  .hero-scale .cube-back {
+    transform: rotateX(-90deg) translateZ(calc(25 * var(--u)));
+  }
+}

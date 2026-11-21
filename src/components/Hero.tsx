@@ -193,8 +193,8 @@ export default function Hero({ startAnimation = true }: HeroProps) {
 
 
     return (
-        <section id="home" className="min-h-screen bg-[#212844] text-[#F0E8D5] flex items-start justify-center px-6 pt-28 pb-24 overflow-visible md:items-center md:pt-30 md:pb-8 md:overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-2 w-full items-start relative gap-4 md:gap-8">
+        <section id="home" className="hero-scale min-h-screen bg-[#212844] text-[#F0E8D5] flex items-start justify-center px-6 pt-28 pb-24 overflow-visible md:items-center md:px-[calc(24*var(--u))] md:pt-[calc(120*var(--u))] md:pb-[calc(32*var(--u))] md:overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-2 w-full items-start relative gap-4 md:gap-[calc(32*var(--u))]">
 
                 {/* Left - Large Vertical Name */}
                 <motion.div
@@ -202,7 +202,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                 variants={container}
                 initial="hidden"
                 animate={nameControls}
-                className="text-[#F0E8D5] font-heading text-[25.5vw] sm:text-[25vw] md:text-[190px] leading-[0.88] md:leading-[0.85] uppercase text-left md:text-left"
+                className="text-[#F0E8D5] font-heading text-[25.5vw] sm:text-[25vw] md:text-[length:calc(190*var(--u))] leading-[0.88] md:leading-[0.85] uppercase text-left md:text-left"
                 >
                 {nameLines.map((lineText, i) => (
                     <motion.p
@@ -228,7 +228,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                 variants={imageVariant}
                 initial="hidden"
                 animate={imageControls}
-                className="block absolute w-[32vw] md:absolute top-[9vw] right-[0vw] md:right-auto md:top-[98px] md:left-[395px] -translate-y-1/2 z-20 overflow-hidden mx-auto mt-8"
+                className="block absolute w-[32vw] md:absolute top-[9vw] right-[0vw] md:right-auto md:top-[calc(98*var(--u))] md:left-[calc(395*var(--u))] md:w-[calc(235*var(--u))] -translate-y-1/2 z-20 overflow-hidden mx-auto mt-8 md:mt-[calc(32*var(--u))]"
                 style={{
                     clipPath: 'inset(0 100% 0 0)',
                     WebkitClipPath: 'inset(0 100% 0 0)',
@@ -239,7 +239,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                         alt="Profile"
                         width={235}
                         height={400}
-                        className="object-cover rounded"
+                        className="object-cover rounded md:h-auto md:w-full"
                         priority
                     />
                 </motion.div>
@@ -254,7 +254,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                 variants={container}
                 initial="hidden"
                 animate={nameControls}
-                className="flex w-full justify-between text-[#F0E8D5] text-[36px] sm:text-5xl md:block md:w-auto md:text-[100px] font-heading uppercase leading-[0.85]"
+                className="flex w-full justify-between text-[#F0E8D5] text-[36px] sm:text-5xl md:block md:w-auto md:text-[length:calc(100*var(--u))] font-heading uppercase leading-[0.85]"
                 >
                     {['Developer', 'Designer'].map((text) => (
                         <motion.p key={text} variants={titleLine} className="whitespace-nowrap">
@@ -273,7 +273,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
 
 
                 {/* Bottom Section - CV + Socials */}
-                <div className="flex flex-col items-center md:items-end gap-5 mt-4 md:gap-6 md:mt-12">
+                <div className="flex flex-col items-center md:items-end gap-5 mt-4 md:gap-[calc(24*var(--u))] md:mt-[calc(48*var(--u))]">
                     {/* CV Button */}
                     <motion.a
                     variants={cvVariant}
@@ -288,7 +288,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                         <span className="absolute inset-0 bg-transparent border border-[#EF8A76] rounded-md translate-y-[6px] z-0" />
 
                         {/* Top layer - front face */}
-                        <span className="relative inline-flex items-center justify-between gap-6 px-[22vw] sm:px-16 md:px-28 py-6 sm:py-8 border border-[#EF8A76] rounded-md bg-[#212844] text-[#F0E8D5] text-[15vw] sm:text-5xl md:text-[80px] font-heading leading-none transition-transform duration-200 ease-in-out group-hover:-translate-y-[4px] group-active:-translate-y-[-4px] z-10">
+                        <span className="relative inline-flex items-center justify-between gap-6 px-[22vw] sm:px-16 md:px-[calc(112*var(--u))] md:gap-[calc(24*var(--u))] py-6 sm:py-8 md:py-[calc(32*var(--u))] border border-[#EF8A76] rounded-md bg-[#212844] text-[#F0E8D5] text-[15vw] sm:text-5xl md:text-[length:calc(80*var(--u))] font-heading leading-none transition-transform duration-200 ease-in-out group-hover:-translate-y-[4px] group-active:-translate-y-[-4px] z-10">
                             CV
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -296,7 +296,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                             viewBox="0 0 24 24"
                             strokeWidth={2}
                             stroke="currentColor"
-                            className="w-19 h-19"
+                            className="w-19 h-19 md:w-[calc(76*var(--u))] md:h-[calc(76*var(--u))]"
                             >
                             <path
                                 strokeLinecap="round"
@@ -312,7 +312,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
                     variants={socialContainer}
                     initial="hidden"
                     animate={nameControls}
-                    className="flex gap-3"
+                    className="flex gap-3 md:gap-[calc(12*var(--u))]"
                     >
                         {[
                             { href: "https://www.instagram.com/kenzitjandra/", front: "INSTAGRAM", back: "@kenzitjandra" },
