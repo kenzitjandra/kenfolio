@@ -31,14 +31,13 @@ const DESKTOP_LAYOUT: {
   trackWidthVw: 540,
   titleLeftVw: [2, 112, 355],
   cards: [
-    // Professional 1 — BCA (shorter image so 3 bullets fit below)
+    // Professional 1
     {
       className: 'left-[44vw] top-[62vh]',
       imageClassName: 'left-[0vw] top-[-38vh] h-[34vh] w-[36vw]',
       decorativeBlocks: [
-        'left-[-36vw] top-[-34vh] h-[26vh] w-[12vw]',
-        'left-[-20vw] top-[0vh] h-[26vh] w-[12vw]',
-        'left-[42vw] top-[-36vh] h-[24vh] w-[11vw]',
+        'left-[-36vw] top-[-34vh] h-[30vh] w-[12vw]',
+        'left-[42vw] top-[-36vh] h-[30vh] w-[11vw]',
       ],
     },
     // Organizational 1
@@ -376,7 +375,8 @@ function ExperiencePhoto({
       alt={image.alt}
       fill
       sizes={sizes}
-      className="object-cover object-center"
+      className="object-cover"
+      style={{ objectPosition: image.position ?? 'center' }}
       loading={eager ? 'eager' : 'lazy'}
       data-preload="true"
     />
@@ -458,6 +458,7 @@ function MobileExperienceCard({ item, index }: { item: ExperienceItem; index: nu
             fill
             sizes="100vw"
             className="object-cover"
+            style={{ objectPosition: item.image.position ?? 'center' }}
           />
         ) : (
           <PhotoPlaceholder />

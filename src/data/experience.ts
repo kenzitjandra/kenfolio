@@ -1,7 +1,7 @@
 export type ExperienceImage = {
-  /** TODO: photos */
   src?: string;
   alt: string;
+  position?: string;
 };
 
 export type ExperienceItem = {
@@ -29,12 +29,22 @@ export const experienceCategories: ExperienceCategory[] = [
         title: 'Application Developer Intern',
         eyebrow: 'BCA · GSIT Application Development Lab',
         year: 'Aug 2026 - Present',
-        // TODO: add src for each photo when you have them, e.g. '/experience/bca_main_professional.webp'
-        image: { alt: 'BCA Application Development Lab internship' },
+        image: {
+          src: '/experience/bca_2_work.webp',
+          alt: 'Team lunch with the BCA Application Development Lab',
+          position: 'center 60%',
+        },
         decorativeImages: [
-          { alt: 'BCA internship documentation 1' },
-          { alt: 'BCA internship documentation 2' },
-          { alt: 'BCA internship documentation 3' },
+          {
+            src: '/experience/bca_1_work.webp',
+            alt: 'Kenzi with his Application Development Lab lanyard',
+            position: 'center 45%',
+          },
+          {
+            src: '/experience/bca_3_work.webp',
+            alt: 'Wisma 77 Tower, BCA office',
+            position: 'center 45%',
+          },
         ],
         description: [
           'Built frontend features for internal banking apps across 4 projects using Vue 3, TypeScript and Next.js, from new pages to API integration',
