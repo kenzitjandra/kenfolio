@@ -47,7 +47,7 @@ export const projects: Project[] = [
         description:
             'Kenfolio is my personal portfolio website, built to reflect my identity as both a developer and designer. The site uses Next.js, Tailwind CSS, Framer Motion, GSAP, and smooth scrolling interactions to create a minimal, modern, and cinematic browsing experience while showcasing my projects, design direction, and frontend development skills.',
         image: '/projects/kenfolio_v2.png',
-        link: '#',
+        link: 'https://itskenz.vercel.app',
     },
     {
         title: 'Portable Air Purifier',

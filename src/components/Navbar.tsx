@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Logo from './Logo';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { AnimatePresence, motion } from 'framer-motion';
-import { lenis } from '@/app/providers/LenisProvider';
+import { scrollToSection } from '@/lib/scrollToSection';
 import Magnetic from '@/components/Magnetic';
 
 export default function Navbar() {
@@ -57,28 +57,7 @@ export default function Navbar() {
     ];
 
     const handleNavClick = (item: { label: string; id: string }) => {
-        if (!lenis) return;
-
-        if (item.id === 'about') {
-            const targetId = isMobile ? 'about-content' : 'about-title';
-            const target = document.getElementById(targetId);
-
-            if (target) {
-                lenis.scrollTo(target, {
-                    offset: isMobile ? -20 : 0,
-                });
-            }
-
-            setIsMenuOpen(false);
-            return;
-        }
-
-        const target = document.getElementById(item.id);
-
-        if (target) {
-            lenis.scrollTo(target, { offset: -50 });
-        }
-
+        scrollToSection(item.id);
         setIsMenuOpen(false);
     };
 
@@ -92,12 +71,8 @@ export default function Navbar() {
             <div className="flex w-full items-center justify-between">
                 <button
                     onClick={() => {
-                        const homeSection = document.getElementById('home');
-
-                        if (homeSection && lenis) {
-                            lenis.scrollTo(homeSection, { offset: -50 });
-                            setIsMenuOpen(false);
-                        }
+                        scrollToSection('home');
+                        setIsMenuOpen(false);
                     }}
                     className="group relative flex h-[54px] w-[54px] items-center justify-center overflow-hidden rounded-md"
                 >

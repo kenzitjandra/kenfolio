@@ -193,7 +193,7 @@ export default function Hero({ startAnimation = true }: HeroProps) {
 
 
     return (
-        <section id="home" className="hero-scale min-h-screen bg-[#212844] text-[#F0E8D5] flex items-start justify-center px-6 pt-28 pb-24 overflow-visible md:items-center md:px-[calc(24*var(--u))] md:pt-[calc(120*var(--u))] md:pb-[calc(32*var(--u))] md:overflow-hidden">
+        <section className="hero-scale min-h-screen bg-[#212844] text-[#F0E8D5] flex items-start justify-center px-6 pt-28 pb-24 overflow-visible md:items-center md:px-[calc(24*var(--u))] md:pt-[calc(120*var(--u))] md:pb-[calc(32*var(--u))] md:overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2 w-full items-start relative gap-4 md:gap-[calc(32*var(--u))]">
 
                 {/* Left - Large Vertical Name */}
