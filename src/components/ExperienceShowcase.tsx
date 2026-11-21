@@ -28,31 +28,31 @@ const DESKTOP_LAYOUT: {
   titleLeftVw: number[];
   cards: CardLayout[];
 } = {
-  trackWidthVw: 540,
-  titleLeftVw: [2, 112, 355],
+  trackWidthVw: 502,
+  titleLeftVw: [2, 74, 317],
   cards: [
-    // Professional 1
+    // Professional 1 — BCA
     {
-      className: 'left-[44vw] top-[62vh]',
-      imageClassName: 'left-[0vw] top-[-38vh] h-[34vh] w-[36vw]',
+      className: 'left-[30vw] top-[62vh]',
+      imageClassName: 'left-[0vw] top-[-38vh] h-[34vh] w-[min(40vw,36rem)]',
       decorativeBlocks: [
-        'left-[-36vw] top-[-34vh] h-[30vh] w-[12vw]',
-        'left-[42vw] top-[-36vh] h-[30vh] w-[11vw]',
+        'left-[-20vw] top-[-30vh] h-[30vh] w-[12vw]', // bca_1 — closer to the main photo
+        'left-[44vw] top-[-20vh] h-[30vh] w-[11vw]',  // bca_3 — tucks under KOMTIG
       ],
     },
     // Organizational 1
     {
-      className: 'left-[154vw] top-[68vh]',
+      className: 'left-[116vw] top-[68vh]',
       imageClassName: 'left-[0vw] top-[-43vh] h-[40vh] w-[36vw]',
       decorativeBlocks: [
-        'left-[-36vw] top-[-38vh] h-[28vh] w-[12vw]',
+        'left-[-26vw] top-[-42vh] h-[28vh] w-[12vw]',
         'left-[-20vw] top-[-2vh] h-[26vh] w-[12vw]',
         'left-[42vw] top-[-36vh] h-[24vh] w-[11vw]',
       ],
     },
     // Organizational 2
     {
-      className: 'left-[232vw] top-[25vh]',
+      className: 'left-[194vw] top-[25vh]',
       imageClassName: 'left-[0vw] top-[30vh] h-[40vh] w-[38vw]',
       decorativeBlocks: [
         'left-[-20vw] top-[2vh] h-[22vh] w-[11vw]',
@@ -62,7 +62,7 @@ const DESKTOP_LAYOUT: {
     },
     // Organizational 3
     {
-      className: 'left-[300vw] top-[68vh]',
+      className: 'left-[262vw] top-[68vh]',
       imageClassName: 'left-[0vw] top-[-43vh] h-[40vh] w-[40vw]',
       decorativeBlocks: [
         'left-[-16vw] top-[-6vh] h-[24vh] w-[11vw]',
@@ -72,7 +72,7 @@ const DESKTOP_LAYOUT: {
     },
     // Competitions 1
     {
-      className: 'left-[380vw] top-[68vh]',
+      className: 'left-[342vw] top-[68vh]',
       imageClassName: 'left-[0vw] top-[-43vh] h-[40vh] w-[40vw]',
       decorativeBlocks: [
         'left-[-18vw] top-[-40vh] h-[24vh] w-[12vw]',
@@ -82,7 +82,7 @@ const DESKTOP_LAYOUT: {
     },
     // Competitions 2
     {
-      className: 'left-[464vw] top-[23vh]',
+      className: 'left-[426vw] top-[23vh]',
       imageClassName: 'left-[0vw] top-[24vh] h-[48vh] w-[40vw]',
       decorativeBlocks: [
         'left-[-20vw] top-[4vh] h-[24vh] w-[12vw]',
