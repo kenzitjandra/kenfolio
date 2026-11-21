@@ -1,6 +1,6 @@
 'use client';
 
-import { lenis } from '@/app/providers/LenisProvider';
+import { scrollToSection } from '@/lib/scrollToSection';
 import Image from 'next/image';
 
 export default function Footer() {
@@ -10,13 +10,6 @@ export default function Footer() {
     { label: 'WORK', id: 'experience' },
     { label: 'PROJECTS', id: 'projects' },
   ];
-
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    if (section && lenis) {
-      lenis.scrollTo(section, { offset: -50 });
-    }
-  };
 
   return (
     <footer className="bg-[#212844] text-[#F0E8D5] px-8 pb-10">

@@ -7,7 +7,8 @@ import * as THREE from 'three';
 type Axis = 'x' | 'y' | 'z';
 type Layer = -1 | 0 | 1;
 type Dir = 1 | -1;
-type Move = { axis: Axis; layer: Layer; dir: Dir };
+type Turns = 1 | 2;
+type Move = { axis: Axis; layer: Layer; dir: Dir; turns: Turns };
 
 type Sticker = {
   id: string;
@@ -54,10 +55,49 @@ const coreMat = new THREE.MeshToonMaterial({
   color: COLORS.CORE,
 });
 
+const FACE_MOVES: Record<string, { axis: Axis; layer: Layer; dir: Dir }> = {
+  R: { axis: 'x', layer: 1, dir: -1 },
+  L: { axis: 'x', layer: -1, dir: 1 },
+  U: { axis: 'y', layer: 1, dir: -1 },
+  D: { axis: 'y', layer: -1, dir: 1 },
+  F: { axis: 'z', layer: 1, dir: -1 },
+  B: { axis: 'z', layer: -1, dir: 1 },
+};
+
+const ORIENTATION: Record<string, string> = {
+  U: 'D',
+  D: 'U',
+  F: 'B',
+  B: 'F',
+  R: 'R',
+  L: 'L',
+};
+
+function parseAlg(alg: string): Move[] {
+  return alg
+    .trim()
+    .split(/\s+/)
+    .map((token) => {
+      const base = FACE_MOVES[ORIENTATION[token[0]]];
+      if (!base) throw new Error(`Unknown move in algorithm: "${token}"`);
+
+      const turns: Turns = token.includes('2') ? 2 : 1;
+      const prime = token.includes("'");
+
+      return {
+        ...base,
+        dir: (prime ? -base.dir : base.dir) as Dir,
+        turns,
+      };
+    });
+}
+
 /* ================= Move helpers ================= */
 
 function invertMoves(moves: Move[]): Move[] {
-  return [...moves].reverse().map((m) => ({ ...m, dir: (m.dir === 1 ? -1 : 1) as Dir }));
+  return [...moves]
+    .reverse()
+    .map((m) => ({ ...m, dir: (m.dir === 1 ? -1 : 1) as Dir }));
 }
 
 function rotateVec90(v: THREE.Vector3, axis: Axis, dir: Dir) {
@@ -80,6 +120,10 @@ function rotateVec90(v: THREE.Vector3, axis: Axis, dir: Dir) {
   v.set(Math.round(v.x), Math.round(v.y), Math.round(v.z));
 }
 
+function rotateVecByMove(v: THREE.Vector3, move: Move) {
+  for (let i = 0; i < move.turns; i++) rotateVec90(v, move.axis, move.dir);
+}
+
 function isInLayer(s: Sticker, axis: Axis, layer: Layer) {
   if (axis === 'x') return s.coord.x === layer;
   if (axis === 'y') return s.coord.y === layer;
@@ -93,31 +137,24 @@ function easeInOutCubic(x: number) {
 function normalToQuat(n: THREE.Vector3) {
   // plane default faces +Z; rotate it so +Z aligns with normal n
   const z = new THREE.Vector3(0, 0, 1);
-  const q = new THREE.Quaternion().setFromUnitVectors(z, n.clone().normalize());
-  return q;
+  return new THREE.Quaternion().setFromUnitVectors(z, n.clone().normalize());
 }
 
-/* ================= Predetermined scramble =================
-   Edit this list to change your “starting scramble”.
-   This is deterministic. Solve is automatically the inverse. */
+/* ================= The algorithm =================- */
 
-const PRESET_SCRAMBLE: Move[] = [
-  { axis: 'y', layer: 1, dir: 1 },  // U
-  { axis: 'x', layer: 1, dir: 1 },  // R
-  { axis: 'y', layer: 1, dir: -1 }, // U'
-  { axis: 'x', layer: 1, dir: -1 }, // R'
-  { axis: 'z', layer: 1, dir: 1 },  // F
-  { axis: 'y', layer: 0, dir: -1 }, // E'
-  { axis: 'x', layer: -1, dir: 1 }, // L
-  { axis: 'z', layer: -1, dir: -1 },// B'
-  { axis: 'y', layer: -1, dir: 1 }, // D
-  { axis: 'x', layer: 0, dir: 1 },  // M (x middle)
-  { axis: 'z', layer: 0, dir: -1 }, // S'
-  { axis: 'y', layer: 1, dir: 1 },  // U
-  { axis: 'z', layer: 1, dir: -1 }, // F'
-  { axis: 'x', layer: 1, dir: 1 },  // R
-  { axis: 'y', layer: -1, dir: -1 },// D'
-];
+const SOLVE_ALG = "R U R' F' R U R' U' R' F R2 U' R'"; // Jb perm
+const SOLVE_MOVES = parseAlg(SOLVE_ALG);
+const START_STATE = invertMoves(SOLVE_MOVES);
+
+// Half turns (R2) get a bit more time than quarter turns
+const HALF_TURN_WEIGHT = 1.6;
+const MOVE_WEIGHTS = SOLVE_MOVES.map((m) => (m.turns === 2 ? HALF_TURN_WEIGHT : 1));
+const MOVE_STARTS: number[] = [];
+let TIMELINE_LENGTH = 0;
+for (const w of MOVE_WEIGHTS) {
+  MOVE_STARTS.push(TIMELINE_LENGTH);
+  TIMELINE_LENGTH += w;
+}
 
 /* ================= Main component ================= */
 
@@ -125,15 +162,13 @@ export default function RubiksCube({ t }: { t: number }) {
   const mainRef = useRef<THREE.Group>(null);
   const pivotRef = useRef<THREE.Group>(null);
 
-  // tighter = less chance seeing inside
   const SPACING = 1.0; // grid spacing
   const FACE_OFFSET = 1.52; // how far stickers sit from center (slightly > 1.5)
 
   const stickersRef = useRef<Sticker[]>([]);
   const initializedRef = useRef(false);
 
-  const solveMoves = useMemo(() => invertMoves(PRESET_SCRAMBLE), []);
-  const totalMoves = solveMoves.length;
+  const totalMoves = SOLVE_MOVES.length;
 
   const timelineRef = useRef(0);
   const completedRef = useRef(0);
@@ -144,8 +179,6 @@ export default function RubiksCube({ t }: { t: number }) {
   } | null>(null);
 
   const stickerDefs = useMemo(() => {
-    // 54 stickers in solved state:
-    // For each face, 3x3 with fixed normal.
     const defs: Array<{
       id: string;
       coord: [number, number, number];
@@ -180,12 +213,7 @@ export default function RubiksCube({ t }: { t: number }) {
             normal = [-1, 0, 0];
           }
 
-          defs.push({
-            id: `${face}:${a},${b}`,
-            coord,
-            normal,
-            color,
-          });
+          defs.push({ id: `${face}:${a},${b}`, coord, normal, color });
         }
       }
     };
@@ -201,7 +229,6 @@ export default function RubiksCube({ t }: { t: number }) {
   }, []);
 
   const positionSticker = (s: Sticker) => {
-    // Snap to exact surface position based on coord + normal
     const c = s.coord;
     const n = s.normal;
 
@@ -213,11 +240,10 @@ export default function RubiksCube({ t }: { t: number }) {
   };
 
   const applyMoveInstant = (move: Move) => {
-    const list = stickersRef.current;
-    for (const s of list) {
+    for (const s of stickersRef.current) {
       if (!isInLayer(s, move.axis, move.layer)) continue;
-      rotateVec90(s.coord, move.axis, move.dir);
-      rotateVec90(s.normal, move.axis, move.dir);
+      rotateVecByMove(s.coord, move);
+      rotateVecByMove(s.normal, move);
       positionSticker(s);
     }
   };
@@ -236,28 +262,32 @@ export default function RubiksCube({ t }: { t: number }) {
     activeRef.current = { move, stickers: slice };
   };
 
+  const setPivotAngle = (move: Move, angle: number) => {
+    const pivot = pivotRef.current;
+    if (!pivot) return;
+
+    pivot.rotation.set(0, 0, 0);
+    if (move.axis === 'x') pivot.rotation.x = angle;
+    if (move.axis === 'y') pivot.rotation.y = angle;
+    if (move.axis === 'z') pivot.rotation.z = angle;
+  };
+
   const finishMove = () => {
     const active = activeRef.current;
     const main = mainRef.current;
     const pivot = pivotRef.current;
     if (!active || !main || !pivot) return;
 
-    // Snap pivot to exact 90° visually, then bake into logical coords
     const { move } = active;
 
-    pivot.rotation.set(0, 0, 0);
-    const snap = move.dir * (Math.PI / 2);
-    if (move.axis === 'x') pivot.rotation.x = snap;
-    if (move.axis === 'y') pivot.rotation.y = snap;
-    if (move.axis === 'z') pivot.rotation.z = snap;
+    // Snap to the exact final angle, then bake into logical coords
+    setPivotAngle(move, move.dir * move.turns * (Math.PI / 2));
 
-    // Reattach to main
     active.stickers.forEach((s) => main.attach(s.group));
 
-    // Update logical coords + normals + snap transforms
     active.stickers.forEach((s) => {
-      rotateVec90(s.coord, move.axis, move.dir);
-      rotateVec90(s.normal, move.axis, move.dir);
+      rotateVecByMove(s.coord, move);
+      rotateVecByMove(s.normal, move);
       positionSticker(s);
     });
 
@@ -270,26 +300,19 @@ export default function RubiksCube({ t }: { t: number }) {
     const main = mainRef.current;
     if (!main) return;
 
-    // Find the sticker groups we render and bind them to runtime Sticker objects
     const runtime: Sticker[] = [];
-    const groups = main.children.filter((c) => (c as any).type === 'Group') as THREE.Group[];
-
-    // First child is pivot group (we add it first), so skip any that aren't sticker
-    const stickerGroups = groups.filter((g) => (g as any).userData?.isSticker);
-
-    stickerGroups.sort((a, b) =>
-      String((a as any).userData.id).localeCompare(String((b as any).userData.id))
-    );
+    const stickerGroups = main.children.filter(
+      (c) => c.type === 'Group' && c.userData?.isSticker
+    ) as THREE.Group[];
 
     for (const g of stickerGroups) {
-      const id = String((g as any).userData.id);
-      const coordArr = (g as any).userData.coord as [number, number, number];
-      const normalArr = (g as any).userData.normal as [number, number, number];
+      const coordArr = g.userData.coord as [number, number, number];
+      const normalArr = g.userData.normal as [number, number, number];
 
       const s: Sticker = {
-        id,
-        coord: new THREE.Vector3(coordArr[0], coordArr[1], coordArr[2]),
-        normal: new THREE.Vector3(normalArr[0], normalArr[1], normalArr[2]),
+        id: String(g.userData.id),
+        coord: new THREE.Vector3(...coordArr),
+        normal: new THREE.Vector3(...normalArr),
         group: g,
       };
 
@@ -299,8 +322,10 @@ export default function RubiksCube({ t }: { t: number }) {
 
     stickersRef.current = runtime;
 
-    // Apply predetermined scramble ONCE instantly
-    for (const m of PRESET_SCRAMBLE) applyMoveInstant(m);
+    // Put the cube into the Jb case instantly
+    for (const m of START_STATE) applyMoveInstant(m);
+
+    main.rotation.x = Math.PI;
 
     initializedRef.current = true;
   }, []);
@@ -312,58 +337,45 @@ export default function RubiksCube({ t }: { t: number }) {
     if (!initializedRef.current) return;
 
     const p = THREE.MathUtils.clamp(t, 0, 1);
-    const targetTimeline = p * totalMoves;
+    const target = p * TIMELINE_LENGTH;
 
     // Smooth chase so progress jumps don't stutter turns
     const CHASE = 7.0;
     timelineRef.current = THREE.MathUtils.lerp(
       timelineRef.current,
-      targetTimeline,
+      target,
       1 - Math.exp(-CHASE * delta)
     );
 
-    const whole = Math.floor(timelineRef.current);
-    const frac = THREE.MathUtils.clamp(timelineRef.current - whole, 0, 1);
-    const eased = easeInOutCubic(frac);
+    const T = timelineRef.current;
 
-    // Apply any completed moves we passed
-    while (completedRef.current < whole) {
+    // Complete every move whose end we've (practically) passed
+    while (
+      completedRef.current < totalMoves &&
+      T >= MOVE_STARTS[completedRef.current] + MOVE_WEIGHTS[completedRef.current] - 0.02
+    ) {
       if (activeRef.current) {
         finishMove();
-        completedRef.current += 1;
       } else {
-        applyMoveInstant(solveMoves[completedRef.current]);
-        completedRef.current += 1;
+        applyMoveInstant(SOLVE_MOVES[completedRef.current]);
       }
+      completedRef.current += 1;
     }
 
-    // Optional subtle global motion (comment out if you want completely static)
-    main.rotation.y += delta * 0.6;
-    main.rotation.x += delta * 0.2;
+    main.rotation.y -= delta * 0.45;
 
-    // Animate current move slice
+    // Animate the current move
     if (completedRef.current < totalMoves) {
-      const move = solveMoves[completedRef.current];
+      const i = completedRef.current;
+      const move = SOLVE_MOVES[i];
 
       if (!activeRef.current) beginMove(move);
       if (!activeRef.current) return;
 
-      const angle = move.dir * (Math.PI / 2) * eased;
+      const frac = THREE.MathUtils.clamp((T - MOVE_STARTS[i]) / MOVE_WEIGHTS[i], 0, 1);
+      const angle = move.dir * move.turns * (Math.PI / 2) * easeInOutCubic(frac);
 
-      pivot.rotation.set(0, 0, 0);
-      if (move.axis === 'x') pivot.rotation.x = angle;
-      if (move.axis === 'y') pivot.rotation.y = angle;
-      if (move.axis === 'z') pivot.rotation.z = angle;
-
-      if (frac > 0.999) {
-        finishMove();
-        completedRef.current += 1;
-      }
-    } else {
-      if (activeRef.current) {
-        finishMove();
-        completedRef.current += 1;
-      }
+      setPivotAngle(move, angle);
     }
   });
 
@@ -374,7 +386,7 @@ export default function RubiksCube({ t }: { t: number }) {
   return (
     <group position={[0, -0.15, 0]} scale={0.5}>
       <group ref={mainRef}>
-        {/* Core cube to hide interior (no gaps showing) */}
+        {/* Core cube to hide interior */}
         <mesh>
           <boxGeometry args={[2.1, 2.1, 2.1]} />
           <primitive object={coreMat} attach="material" />
@@ -393,12 +405,10 @@ export default function RubiksCube({ t }: { t: number }) {
               normal: d.normal,
             }}
           >
-            {/* Border */}
             <mesh material={borderMat} renderOrder={1}>
               <planeGeometry args={[BORDER, BORDER]} />
             </mesh>
 
-            {/* Colored tile */}
             <mesh material={stickerMat(d.color)} position={[0, 0, 0.001]} renderOrder={2}>
               <planeGeometry args={[TILE, TILE]} />
             </mesh>

@@ -183,8 +183,8 @@ export default function HeroAboutTransition({
         tl.to(
           aboutContent,
           {
-            y: '-120vh',
-            duration: 2.2,
+            y: '-55vh',
+            duration: 1.0,
             ease: 'none',
           },
           1.4
@@ -193,8 +193,8 @@ export default function HeroAboutTransition({
         tl.to(
           frame,
           {
-            y: '-86vh',
-            duration: 2.2,
+            y: '-39vh',
+            duration: 1.0,
             ease: 'none',
           },
           1.4
@@ -334,8 +334,8 @@ export default function HeroAboutTransition({
         tl.to(
           aboutContent,
           {
-            y: '-95vh',
-            duration: 2.2,
+            y: '-43vh',
+            duration: 1.0,
             ease: 'none',
           },
           1.4
@@ -344,8 +344,8 @@ export default function HeroAboutTransition({
         tl.to(
           frame,
           {
-            y: '-78vh',
-            duration: 2.2,
+            y: '-35vh',
+            duration: 1.0,
             ease: 'none',
           },
           1.4
@@ -374,7 +374,7 @@ export default function HeroAboutTransition({
     <section
       id="home"
       ref={sectionRef}
-      className="relative min-h-[260vh] bg-[#F0E8D5] md:min-h-[360vh]"
+      className="relative min-h-[207vh] bg-[#F0E8D5] md:min-h-[274vh]"
     >
       {/* Desktop ABOUT nav target */}
       <div
@@ -385,7 +385,7 @@ export default function HeroAboutTransition({
       {/* Mobile ABOUT nav target */}
       <div
         id="about-content"
-        className="pointer-events-none absolute left-0 top-[178vh] h-px w-px md:hidden"
+        className="pointer-events-none absolute left-0 top-[107vh] h-px w-px md:hidden"
       />
 
       <div className="sticky top-0 h-screen overflow-hidden">

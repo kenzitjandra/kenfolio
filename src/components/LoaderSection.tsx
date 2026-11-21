@@ -9,6 +9,29 @@ type LoaderSectionProps = {
   onExitStart?: () => void;
 };
 
+const HOLD_AT = 95; // the counter waits here until images are ready
+const IMAGE_WAIT_TIMEOUT = 4000; // never block the loader longer than this
+
+function waitForPreloadImages(timeoutMs: number) {
+  const images = Array.from(
+    document.querySelectorAll<HTMLImageElement>('img[data-preload="true"]')
+  ).filter((img) => img.offsetParent !== null); // skip images inside hidden layouts
+
+  const pending = images
+    .filter((img) => !img.complete)
+    .map(
+      (img) =>
+        new Promise<void>((resolve) => {
+          img.addEventListener('load', () => resolve(), { once: true });
+          img.addEventListener('error', () => resolve(), { once: true });
+        })
+    );
+
+  const timeout = new Promise<void>((resolve) => setTimeout(resolve, timeoutMs));
+
+  return Promise.race([Promise.all(pending).then(() => undefined), timeout]);
+}
+
 export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProps) {
   const [progress, setProgress] = useState(0);
   const [cubeT, setCubeT] = useState(0); // 0..1 smooth cube timeline
@@ -19,6 +42,10 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
   // refs for adaptive cube timing
   const progressRef = useRef(0);
   const cancelledRef = useRef(false);
+  const unlockedRef = useRef(false);
+
+  const imagesReadyRef = useRef(false);
+  const imageWaitStartedRef = useRef(false);
 
   const lastProgRef = useRef(0);
   const lastTimeRef = useRef(0);
@@ -38,7 +65,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
     cancelledRef.current = false;
 
     // Ensure page behind is at top
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
 
     // lock scroll + stop Lenis
     const prevHtml = document.documentElement.style.overflow;
@@ -99,12 +126,13 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
       if (cancelledRef.current) return;
 
       // unlock scroll + start Lenis
+      unlockedRef.current = true;
       window.dispatchEvent(new Event('itsken:scroll-unlock'));
       document.documentElement.style.overflow = prevHtml;
       document.body.style.overflow = prevBody;
 
       // Keep user at the real top (title is top)
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
 
       onDone();
     };
@@ -152,35 +180,44 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
       rafId = requestAnimationFrame(animateCube);
     });
 
-    // --- Stuttery progress ticker (your loading number) ---
     const tick = () => {
-      setProgress((p) => {
-        if (p >= 100) return 100;
-
-        const jump =
-          Math.random() < 0.75
-            ? 1 + Math.floor(Math.random() * 2)
-            : 3 + Math.floor(Math.random() * 8);
-
-        const next = Math.min(100, p + jump);
-
-        // keep ref synced for cube driver
-        progressRef.current = next;
-
-        if (next === 100) {
-          // ensure cube is finished
-          setCubeT(1);
-
-          setTimeout(() => {
-            if (cancelledRef.current) return;
-            finish();
-          }, 250);
-        }
-
-        return next;
-      });
-
       if (cancelledRef.current) return;
+
+      const p = progressRef.current;
+      if (p >= 100) return;
+
+      const jump =
+        Math.random() < 0.75
+          ? 1 + Math.floor(Math.random() * 2)
+          : 3 + Math.floor(Math.random() * 8);
+
+      let next = Math.min(100, p + jump);
+
+      // Hold near the end until the experience images are loaded
+      if (next >= HOLD_AT && !imagesReadyRef.current) {
+        if (!imageWaitStartedRef.current) {
+          imageWaitStartedRef.current = true;
+          waitForPreloadImages(IMAGE_WAIT_TIMEOUT).then(() => {
+            imagesReadyRef.current = true;
+          });
+        }
+        next = Math.min(next, HOLD_AT);
+      }
+
+      progressRef.current = next;
+      setProgress(next);
+
+      if (next === 100) {
+        // ensure cube is finished
+        setCubeT(1);
+
+        setTimeout(() => {
+          if (cancelledRef.current) return;
+          finish();
+        }, 650);
+
+        return; // stop ticking
+      }
 
       const delay =
         Math.random() < 0.85
@@ -200,8 +237,10 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
       if (timeoutId) clearTimeout(timeoutId);
       cancelAnimationFrame(rafId);
 
-      // unlock scroll (safety)
-      window.dispatchEvent(new Event('itsken:scroll-unlock'));
+      // unlock scroll (safety) — only if finish() didn't already do it
+      if (!unlockedRef.current) {
+        window.dispatchEvent(new Event('itsken:scroll-unlock'));
+      }
       document.documentElement.style.overflow = prevHtml;
       document.body.style.overflow = prevBody;
     };
