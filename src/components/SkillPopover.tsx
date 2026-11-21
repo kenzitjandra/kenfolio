@@ -6,11 +6,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { getProjectsUsing, getSkill } from '@/data/skills';
 
 const OPEN_EVENT = 'itsken:skill-popover-open';
-const GAP = 10; // space between button and popup
+const GAP = 10; // space between trigger and tooltip
 const EDGE_PADDING = 16; // min distance from the screen edges
-const CLOSE_DELAY = 150; // time to move the cursor from button to popup
 
 type Position = { top: number; left: number; placement: 'top' | 'bottom' };
+type OpenSource = 'mouse' | 'tap';
 
 type SkillPopoverProps = {
   /** Skill or tag name, e.g. "Next.js" */
@@ -33,44 +33,32 @@ export default function SkillPopover({
   children,
 }: SkillPopoverProps) {
   const id = useId();
-  const panelId = `${id}-panel`;
+  const tooltipId = `${id}-tooltip`;
 
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openedBy, setOpenedBy] = useState<OpenSource>('mouse');
   const [position, setPosition] = useState<Position | null>(null);
 
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const closeTimer = useRef<number | null>(null);
   const lastPointerType = useRef<string>('');
 
   const skill = getSkill(name);
+  const url = skill?.url;
   const description = note ?? skill?.description;
   const usedIn = getProjectsUsing(name).filter((title) => title !== excludeProject);
 
   useEffect(() => setMounted(true), []);
 
-  const cancelClose = useCallback(() => {
-    if (closeTimer.current !== null) {
-      window.clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
+  const show = useCallback((source: OpenSource) => {
+    setOpenedBy(source);
+    setOpen(true);
   }, []);
 
-  const scheduleClose = useCallback(() => {
-    cancelClose();
-    closeTimer.current = window.setTimeout(() => setOpen(false), CLOSE_DELAY);
-  }, [cancelClose]);
+  const hide = useCallback(() => setOpen(false), []);
 
-  const show = useCallback(() => {
-    cancelClose();
-    setOpen(true);
-  }, [cancelClose]);
-
-  // Clear any pending timer on unmount
-  useEffect(() => cancelClose, [cancelClose]);
-
-  // Only one popup open at a time
+  // Only one tooltip open at a time
   useEffect(() => {
     if (!open) return;
     window.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: id }));
@@ -78,32 +66,25 @@ export default function SkillPopover({
 
   useEffect(() => {
     const onOtherOpen = (e: Event) => {
-      if ((e as CustomEvent<string>).detail !== id) {
-        cancelClose();
-        setOpen(false);
-      }
+      if ((e as CustomEvent<string>).detail !== id) setOpen(false);
     };
 
     window.addEventListener(OPEN_EVENT, onOtherOpen);
     return () => window.removeEventListener(OPEN_EVENT, onOtherOpen);
-  }, [id, cancelClose]);
+  }, [id]);
 
-  // Close on scroll, resize, Escape, or a tap/click outside
+  // Close on scroll, resize, Escape, or a tap/click outside the trigger
   useEffect(() => {
     if (!open) return;
 
-    const close = () => {
-      cancelClose();
-      setOpen(false);
-    };
+    const close = () => setOpen(false);
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close();
     };
 
     const onPointerDown = (e: PointerEvent) => {
-      const target = e.target as Node;
-      if (triggerRef.current?.contains(target) || panelRef.current?.contains(target)) return;
+      if (triggerRef.current?.contains(e.target as Node)) return;
       close();
     };
 
@@ -118,10 +99,9 @@ export default function SkillPopover({
       window.removeEventListener('keydown', onKeyDown);
       document.removeEventListener('pointerdown', onPointerDown);
     };
-  }, [open, cancelClose]);
+  }, [open]);
 
-  // Position the popup under the button (or above if there's no room),
-  // kept inside the viewport. Runs before paint, so there's no jump.
+  // Position under the trigger (or above if there's no room), inside the viewport
   useLayoutEffect(() => {
     if (!open) return;
 
@@ -143,41 +123,55 @@ export default function SkillPopover({
     setPosition({ top, left, placement: fitsBelow ? 'bottom' : 'top' });
   }, [open]);
 
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    const fromMouse = lastPointerType.current === 'mouse';
+    lastPointerType.current = '';
+
+    // Mouse: the tooltip is already showing from hover, the link just opens.
+    if (fromMouse) return;
+
+    // Touch / keyboard: first tap shows the details, second tap follows the link.
+    if (!open) {
+      e.preventDefault();
+      show('tap');
+      return;
+    }
+
+    if (!url) hide();
+  };
+
+  const triggerProps = {
+    ref: (el: HTMLElement | null) => {
+      triggerRef.current = el;
+    },
+    'aria-describedby': open ? tooltipId : undefined,
+    'data-open': open ? '' : undefined,
+    className: `focus:outline-none ${buttonClassName}`,
+    onClick: handleClick,
+    onPointerDown: (e: React.PointerEvent<HTMLElement>) => {
+      lastPointerType.current = e.pointerType;
+    },
+    onPointerEnter: (e: React.PointerEvent<HTMLElement>) => {
+      if (e.pointerType === 'mouse') show('mouse');
+    },
+    onPointerLeave: (e: React.PointerEvent<HTMLElement>) => {
+      if (e.pointerType === 'mouse') hide();
+    },
+  };
+
   const offsetY = position?.placement === 'top' ? -6 : 6;
 
   return (
     <div className={className}>
-      <button
-        ref={triggerRef}
-        type="button"
-        aria-expanded={open}
-        aria-controls={open ? panelId : undefined}
-        data-open={open ? '' : undefined}
-        className={`focus:outline-none ${buttonClassName}`}
-        onPointerDown={(e) => {
-          lastPointerType.current = e.pointerType;
-        }}
-        onPointerEnter={(e) => {
-          if (e.pointerType === 'mouse') show();
-        }}
-        onPointerLeave={(e) => {
-          if (e.pointerType === 'mouse') scheduleClose();
-        }}
-        onClick={() => {
-          // Mouse: hover already opened it, so a click just keeps it open.
-          // Touch / keyboard: click toggles.
-          if (lastPointerType.current === 'mouse') {
-            show();
-          } else if (open) {
-            setOpen(false);
-          } else {
-            show();
-          }
-          lastPointerType.current = '';
-        }}
-      >
-        {children}
-      </button>
+      {url ? (
+        <a href={url} target="_blank" rel="noopener noreferrer" {...triggerProps}>
+          {children}
+        </a>
+      ) : (
+        <button type="button" {...triggerProps}>
+          {children}
+        </button>
+      )}
 
       {mounted &&
         createPortal(
@@ -185,23 +179,18 @@ export default function SkillPopover({
             {open && (
               <motion.div
                 ref={panelRef}
-                id={panelId}
-                role="dialog"
-                aria-label={skill?.name ?? name}
+                id={tooltipId}
+                role="tooltip"
                 initial={{ opacity: 0, y: offsetY }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: offsetY }}
-                transition={{ duration: 0.18, ease: 'easeOut' }}
-                onPointerEnter={cancelClose}
-                onPointerLeave={(e) => {
-                  if (e.pointerType === 'mouse') scheduleClose();
-                }}
+                transition={{ duration: 0.16, ease: 'easeOut' }}
                 style={
                   position
                     ? { top: position.top, left: position.left }
                     : { top: 0, left: 0, visibility: 'hidden' }
                 }
-                className="fixed z-[60] w-[min(20rem,calc(100vw-2rem))] rounded border border-[#EF8A76] bg-[#212844]/95 p-4 text-[#F0E8D5] shadow-xl backdrop-blur-md"
+                className="pointer-events-none fixed z-[60] w-[min(20rem,calc(100vw-2rem))] rounded border border-[#EF8A76] bg-[#212844]/95 p-4 text-[#F0E8D5] shadow-xl backdrop-blur-md"
               >
                 <div className="flex items-start justify-between gap-3">
                   <h4 className="font-heading text-2xl uppercase leading-none">
@@ -238,15 +227,10 @@ export default function SkillPopover({
                   </div>
                 )}
 
-                {skill?.url && (
-                  <a
-                    href={skill.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex font-body text-[11px] font-black uppercase tracking-[0.12em] text-[#EF8A76] hover:underline"
-                  >
-                    Learn more ↗
-                  </a>
+                {url && (
+                  <p className="mt-4 font-body text-[11px] font-black uppercase tracking-[0.12em] text-[#EF8A76]">
+                    {openedBy === 'mouse' ? 'Click to learn more ↗' : 'Tap again to learn more ↗'}
+                  </p>
                 )}
               </motion.div>
             )}
