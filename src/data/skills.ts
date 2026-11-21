@@ -17,52 +17,69 @@ export const skills: Skill[] = [
     category: 'Language',
     url: 'https://developer.mozilla.org/en-US/docs/Web/HTML',
     description:
-      'The base of every web project I build, from landing pages like Cafforia to the course layouts in JeniusAcademy.',
+      'The first web language I ever learned (like most of us webdevs hehe), and still the base of every web project I build.',
   },
   {
     name: 'CSS',
     category: 'Language',
     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS',
-    description: 'Responsive layouts and interactive styling across my vanilla web projects.',
+    description:
+      'Responsive layouts and styling. This is where my obsession with front-end design started.',
   },
   {
     name: 'JavaScript',
     category: 'Language',
     url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
     description:
-      'Interactivity for my vanilla web projects, and the foundation for everything I build with React and Node.',
+      'Brings my vanilla web projects to life, and the foundation of everything I build with React and Node.',
+  },
+  {
+    name: 'TypeScript',
+    category: 'Language',
+    url: 'https://www.typescriptlang.org/',
+    description:
+      'Typed API responses and stores in production Vue and Next.js codebases during my BCA internship.',
   },
   {
     name: 'C',
     category: 'Language',
     url: 'https://gcc.gnu.org/',
-    description: 'TODO: what did you use C for?',
+    description:
+      'Where I learned the fundamentals at university, solving coding exercises and getting comfortable with memory management.',
   },
   {
     name: 'C++',
     category: 'Language',
     url: 'https://isocpp.org/',
-    description: 'TODO: what did you use C++ for?',
+    description:
+      'Picked it up at university to dig deeper into memory management and lower-level programming.',
   },
   {
     name: 'Java',
     category: 'Language',
     url: 'https://www.oracle.com/java/',
-    description: 'TODO: what did you use Java for?',
+    description:
+      'My introduction to object-oriented programming at university.',
   },
   {
     name: 'Python',
     category: 'Language',
     url: 'https://www.python.org/',
     description:
-      'My main language for machine learning and computer vision, from data preprocessing and model training to Streamlit demos.',
+      'My main language for machine learning and computer vision, and my current favorite to write.',
+  },
+  {
+    name: 'Go',
+    category: 'Language',
+    url: 'https://go.dev/',
+    description:
+      'The backend language I use daily at my BCA internship, building services, controllers and APIs.',
   },
   {
     name: 'PHP',
     category: 'Language',
     url: 'https://www.php.net/',
-    description:
-      "Maintained HIMTI BINUS University's Laravel websites as General Manager of Research and Development.",
+    description: "Maintained and updated HIMTI BINUS University's Laravel websites.",
   },
   {
     name: 'SQL',
@@ -74,25 +91,35 @@ export const skills: Skill[] = [
     name: 'React',
     category: 'Library',
     url: 'https://react.dev/',
-    description: 'Component-based UIs with hooks and animation libraries. This portfolio is built on it.',
+    description:
+      'Component-based UIs with hooks and animation libraries. This portfolio is built on it.',
+  },
+  {
+    name: 'Vue.js',
+    category: 'Framework',
+    url: 'https://vuejs.org/',
+    description:
+      'The framework behind one of my projects at my BCA internship, from building pages to wiring up APIs.',
   },
   {
     name: 'Tailwind',
     category: 'Framework',
     url: 'https://tailwindcss.com/',
-    description: 'My go-to for styling. Every section of this portfolio is built with it.',
+    description:
+      'My go-to for styling. Every section of this portfolio uses it, and so do my ongoing web projects.',
   },
   {
     name: 'Node.js',
     category: 'Runtime',
     url: 'https://nodejs.org/',
-    description: "Runs Trakr's backend API.",
+    description: "Powers Trakr's backend API.",
   },
   {
     name: 'Next.js',
     category: 'Framework',
     url: 'https://nextjs.org/',
-    description: 'The framework behind this portfolio, deployed on Vercel.',
+    description:
+      'The framework behind this portfolio (deployed on Vercel), and one I also use on a project at my BCA internship. A personal favorite.',
   },
   {
     name: 'Express.js',
@@ -104,13 +131,21 @@ export const skills: Skill[] = [
     name: 'MongoDB',
     category: 'Database',
     url: 'https://www.mongodb.com/',
-    description: "Stores and structures Trakr's expense data.",
+    description:
+      "Stores and structures Trakr's expense data. I've also worked with it on an internal project at my BCA internship.",
   },
   {
     name: 'GitHub',
     category: 'Tool',
     url: 'https://github.com/kenzitjandra',
-    description: 'Version control and hosting for all my projects, and collaboration on group projects.',
+    description:
+      'Version control, hosting and collaboration for all my personal and university projects.',
+  },
+  {
+    name: 'GitLab',
+    category: 'Tool',
+    url: 'https://gitlab.com/',
+    description: 'Version control for my team projects at my BCA internship.',
   },
 
   /* ---------- Design ---------- */
@@ -118,28 +153,24 @@ export const skills: Skill[] = [
     name: 'Figma',
     category: 'UI Tool',
     url: 'https://figma.com/',
-    description: 'TODO: e.g. which UI/UX designs or prototypes you made in Figma.',
+    description:
+      'Where my UI/UX ideas take shape: this portfolio, web projects in progress, and plenty of design work for student organizations.',
   },
   {
     name: 'Photoshop',
     category: 'Raster',
-    url: 'https://adobe.com/products/photoshop',
-    description: 'TODO (check): photo editing and event visuals for HIMTI events.',
+    url: 'https://www.instagram.com/kendesignsforfun/',
+    description:
+      'Photo editing and poster design for my personal projects. Check out @kendesignsforfun on Instagram, with more coming soon!',
   },
   {
     name: 'Illustrator',
     category: 'Vector',
-    url: 'https://adobe.com/products/illustrator',
+    url: 'https://www.instagram.com/kendesignsforfun/',
     description:
-      'TODO (check): vector work such as the event logo and lanyards for HILET 2025 and SESVENT 2024.',
+      'Vector work and illustrations for my personal designs, also on @kendesignsforfun, with more on the way!',
   },
-  {
-    name: 'Canva',
-    category: 'Quick Design',
-    url: 'https://canva.com/',
-    description: 'TODO: what do you use Canva for?',
-  },
-
+  
   /* ---------- Project-only tags ---------- */
   {
     name: 'TensorFlow',
@@ -217,9 +248,11 @@ export function getProjectsUsing(name: string) {
     .map((p) => p.title);
 }
 
+/** What shows in the Skills section, in order */
 export const devSkills = [
   'HTML', 'CSS', 'JavaScript', 'TypeScript', 'C', 'C++', 'Java', 'Python', 'Go', 'PHP',
-  'SQL', 'React', 'Vue.js', 'Tailwind', 'Node.js', 'Next.js', 'Express.js', 'MongoDB', 'GitHub',
+  'SQL', 'React', 'Vue.js', 'Tailwind', 'Node.js', 'Next.js', 'Express.js', 'MongoDB',
+  'GitHub', 'GitLab',
 ];
 
-export const designSkills = ['Figma', 'Photoshop', 'Illustrator', 'Canva'];
+export const designSkills = ['Figma', 'Photoshop', 'Illustrator'];
