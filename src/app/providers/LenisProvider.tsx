@@ -26,7 +26,6 @@ export default function LenisProvider({
         immediate: true,
         force: true,
       });
-      ScrollTrigger.refresh();
     };
 
     const lockScroll = () => {
@@ -43,7 +42,9 @@ export default function LenisProvider({
       document.documentElement.classList.remove('lenis-stopped');
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
-      ScrollTrigger.refresh();
+
+      // A single refresh, on the next frame
+      requestAnimationFrame(() => ScrollTrigger.refresh());
     };
 
     lenis.on('scroll', ScrollTrigger.update);

@@ -19,9 +19,12 @@ import LoaderSection from '@/components/LoaderSection';
 export default function Home() {
   const [loaderDone, setLoaderDone] = useState(false);
   const [siteReveal, setSiteReveal] = useState(false);
+  const [curtainDone, setCurtainDone] = useState(false);
   
   const experiencePublicationBgRef = useRef<HTMLDivElement | null>(null);
   const experienceToPublicationRef = useRef<HTMLDivElement | null>(null);
+
+  const publicationRef = useRef<HTMLDivElement | null>(null);
 
   useLayoutEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -52,21 +55,11 @@ export default function Home() {
   useEffect(() => {
     if (!loaderDone || !siteReveal) return;
 
-    const refresh = () => {
+    const timer = window.setTimeout(() => {
       ScrollTrigger.refresh();
-    };
+    }, 2500);
 
-    const timers = [
-      window.setTimeout(refresh, 100),
-      window.setTimeout(refresh, 500),
-      window.setTimeout(refresh, 1000),
-    ];
-
-    document.fonts?.ready.then(refresh);
-
-    return () => {
-      timers.forEach((timer) => window.clearTimeout(timer));
-    };
+    return () => window.clearTimeout(timer);
   }, [loaderDone, siteReveal]);
 
   useLayoutEffect(() => {
@@ -104,8 +97,9 @@ export default function Home() {
 
     const bg = experiencePublicationBgRef.current;
     const transitionArea = experienceToPublicationRef.current;
+    const publication = publicationRef.current;
 
-    if (!bg || !transitionArea) return;
+    if (!bg || !transitionArea || !publication) return;
 
     const ctx = gsap.context(() => {
       gsap.set(bg, {
@@ -117,15 +111,15 @@ export default function Home() {
       mm.add('(min-width: 768px)', () => {
         gsap.to(bg, {
           backgroundColor: '#EEE7D6',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: transitionArea,
-            start: 'top+=77.5% top',
-            end: 'bottom-=5% bottom',
-            scrub: 1,
-            invalidateOnRefresh: true,
-            markers: false,
-          },
+            ease: 'none',
+            scrollTrigger: {
+              trigger: publication,
+              start: 'top 50%',
+              end: 'top 19%',
+              scrub: 1,
+              invalidateOnRefresh: true,
+              markers: false,
+            },
         });
       });
 
@@ -134,9 +128,9 @@ export default function Home() {
           backgroundColor: '#EEE7D6',
           ease: 'none',
           scrollTrigger: {
-            trigger: transitionArea,
-            start: 'top+=55% top',
-            end: 'bottom-=20% bottom',
+            trigger: publication,
+            start: 'top bottom',
+            end: 'top 50%',
             scrub: 1,
             invalidateOnRefresh: true,
             markers: false,
@@ -148,10 +142,6 @@ export default function Home() {
         mm.revert();
       };
     }, transitionArea);
-
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-    });
 
     return () => ctx.revert();
   }, [loaderDone, siteReveal]);
@@ -165,30 +155,35 @@ export default function Home() {
         />
       )}
 
+      {/* Navy curtain that wipes up to reveal the site (transform-only = smooth) */}
+      {!curtainDone && (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-[9998] bg-[#212844]"
+          initial={{ y: '0%' }}
+          animate={{ y: siteReveal ? '-100%' : '0%' }}
+          transition={{
+            duration: 0.9,
+            ease: [0.76, 0, 0.24, 1],
+          }}
+          onAnimationComplete={() => {
+            if (siteReveal) setCurtainDone(true);
+          }}
+          style={{ willChange: 'transform' }}
+        />
+      )}
+
       {loaderDone && <Navbar />}
 
       <motion.main
-        initial={{
-          y: '16vh',
-          clipPath: 'inset(100% 0 0 0)',
-        }}
-        animate={
-          siteReveal
-            ? {
-                y: '0vh',
-                clipPath: 'inset(0% 0 0 0)',
-              }
-            : {
-                y: '16vh',
-                clipPath: 'inset(100% 0 0 0)',
-              }
-        }
+        initial={{ y: '16vh' }}
+        animate={{ y: siteReveal ? '0vh' : '16vh' }}
         transition={{
           duration: 0.9,
           ease: [0.76, 0, 0.24, 1],
         }}
         style={{
-          willChange: 'transform, clip-path',
+          willChange: 'transform',
         }}
         className="relative bg-transparent"
       >
@@ -205,7 +200,9 @@ export default function Home() {
           
           <div ref={experienceToPublicationRef} className="relative">
             <ExperienceShowcase />
-            <Publication />
+            <div ref={publicationRef}>
+              <Publication />
+            </div>
           </div>
 
           <Skills />

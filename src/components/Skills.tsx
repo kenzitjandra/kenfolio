@@ -1,33 +1,20 @@
 'use client';
 
-import React from 'react';
+import SkillPopover from '@/components/SkillPopover';
+import { designSkills, devSkills, getSkill } from '@/data/skills';
 
+function SkillCube({ name }: { name: string }) {
+  const skill = getSkill(name);
 
-const devSkills = [
-  { front: 'HTML', back: 'Language', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML' },
-  { front: 'CSS', back: 'Language', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS' },
-  { front: 'JAVASCRIPT', back: 'Language', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
-  { front: 'C', back: 'Language', url: 'https://gcc.gnu.org/' },
-  { front: 'C++', back: 'Language', url: 'https://isocpp.org/' },
-  { front: 'JAVA', back: 'Language', url: 'https://www.oracle.com/java/' },
-  { front: 'PYTHON', back: 'Language', url: 'https://www.python.org/' },
-  { front: 'PHP', back: 'Language', url: 'https://www.php.net/' },
-  { front: 'SQL', back: 'Language', url: 'https://www.mysql.com/' },
-  { front: 'REACT', back: 'Library', url: 'https://reactjs.org/' },
-  { front: 'TAILWIND', back: 'Framework', url: 'https://tailwindcss.com/' },
-  { front: 'NODE JS', back: 'Runtime', url: 'https://nodejs.org/' },
-  { front: 'NEXT JS', back: 'Framework', url: 'https://nextjs.org/' },
-  { front: 'EXPRESS JS', back: 'Framework', url: 'https://expressjs.com/' },
-  { front: 'MONGO DB', back: 'Database', url: 'https://www.mongodb.com/' },
-  { front: 'GITHUB', back: 'Tool', url: 'https://github.com/' },
-];
-
-const designSkills = [
-  { front: 'FIGMA', back: 'UI Tool', url: 'https://figma.com/' },
-  { front: 'PHOTOSHOP', back: 'Raster', url: 'https://adobe.com/products/photoshop' },
-  { front: 'ILLUSTRATOR', back: 'Vector', url: 'https://adobe.com/products/illustrator' },
-  { front: 'CANVA', back: 'Quick Design', url: 'https://canva.com/' },
-];
+  return (
+    <SkillPopover name={name} buttonClassName="cube-wrapper-skills block">
+      <div className="cube-inner">
+        <div className="cube-face-skills cube-front uppercase">{skill?.name ?? name}</div>
+        <div className="cube-face-skills cube-back">{skill?.category ?? ''}</div>
+      </div>
+    </SkillPopover>
+  );
+}
 
 export default function Skills() {
   return (
@@ -35,8 +22,14 @@ export default function Skills() {
       {/* Section Title */}
       <div className="flex items-start flex-row justify-between mb-54">
         <img src="/arrowdown.svg" alt="arrow" className="w-6 h-6 mt-1.5 md:mb-0" />
-        <p className="text-right font-body text-xl font-medium max-w-md md:text-2xl text-[#F0E8D5]">
-          Here are some skills that I have acquired<br />throughout the years
+        <p className="text-right font-body text-xl font-medium md:text-2xl text-[#F0E8D5]">
+          Here are some skills that I have
+          <br />
+          acquired throughout the years
+          <span className="mt-2 block text-sm font-semibold text-[#F0E8D5]/50 md:text-base">
+            <span className="hidden md:inline">hint: hover over them!</span>
+            <span className="md:hidden">hint: tap them!</span>
+          </span>
         </p>
       </div>
 
@@ -46,41 +39,18 @@ export default function Skills() {
         <div>
           <h3 className="text-[46px] md:text-[50px] font-heading mb-4 text-[#F0E8D5]">DEVELOPMENT</h3>
           <div className="md:flex md:flex-wrap gap-3 grid grid-cols-2 w-full">
-            {devSkills.map((skill, i) => (
-                <a
-                href={skill.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cube-wrapper-skills"
-                key={i}
-                >
-                    <div className="cube-inner">
-                        <div className="cube-face-skills cube-front">{skill.front}</div>
-                        <div className="cube-face-skills cube-back">{skill.back}</div>
-                    </div>
-                </a>
+            {devSkills.map((name) => (
+              <SkillCube key={name} name={name} />
             ))}
           </div>
         </div>
-        
 
         {/* Right - Design */}
         <div>
           <h3 className="text-[50px] font-heading mb-4 text-[#F0E8D5]">DESIGN</h3>
           <div className="md:flex md:flex-wrap gap-3 grid grid-cols-2 w-full">
-            {designSkills.map((skill, i) => (
-                <a
-                href={skill.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cube-wrapper-skills"
-                key={i}
-                >
-                    <div className="cube-inner">
-                        <div className="cube-face-skills cube-front">{skill.front}</div>
-                        <div className="cube-face-skills cube-back">{skill.back}</div>
-                    </div>
-                </a>
+            {designSkills.map((name) => (
+              <SkillCube key={name} name={name} />
             ))}
           </div>
         </div>
