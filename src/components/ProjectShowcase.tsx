@@ -5,11 +5,12 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projects } from '@/data/projects';
 import SkillPopover from '@/components/SkillPopover';
+import { useIsClient } from '@/lib/useIsClient';
 
 export default function ProjectShowcase() {
     const [projectIndex, setProjectIndex] = useState(0);
     const [direction, setDirection] = useState<'up' | 'down'>('down');
-    const [mounted, setMounted] = useState(false);
+    const mounted = useIsClient();
 
     const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
     const activeIndexRef = useRef<number>(0);
@@ -22,10 +23,6 @@ export default function ProjectShowcase() {
     });
 
     const activeProject = projects[projectIndex];
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
 
     useEffect(() => {
         let ticking = false;

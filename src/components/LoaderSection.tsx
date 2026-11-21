@@ -65,7 +65,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
     cancelledRef.current = false;
 
     // Ensure page behind is at top
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
 
     // lock scroll + stop Lenis
     const prevHtml = document.documentElement.style.overflow;
@@ -132,7 +132,7 @@ export default function LoaderSection({ onDone, onExitStart }: LoaderSectionProp
       document.body.style.overflow = prevBody;
 
       // Keep user at the real top (title is top)
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
 
       onDone();
     };

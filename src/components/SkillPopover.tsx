@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { getProjectsUsing, getSkill } from '@/data/skills';
+import { useIsClient } from '@/lib/useIsClient';
 
 const OPEN_EVENT = 'itsken:skill-popover-open';
 const GAP = 10; // space between trigger and tooltip
@@ -35,7 +36,7 @@ export default function SkillPopover({
   const id = useId();
   const tooltipId = `${id}-tooltip`;
 
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsClient();
   const [open, setOpen] = useState(false);
   const [openedBy, setOpenedBy] = useState<OpenSource>('mouse');
   const [position, setPosition] = useState<Position | null>(null);
@@ -48,8 +49,6 @@ export default function SkillPopover({
   const url = skill?.url;
   const description = note ?? skill?.description;
   const usedIn = getProjectsUsing(name).filter((title) => title !== excludeProject);
-
-  useEffect(() => setMounted(true), []);
 
   const show = useCallback((source: OpenSource) => {
     setOpenedBy(source);
